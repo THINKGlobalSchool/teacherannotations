@@ -17,10 +17,16 @@ $english = array(
 	// Page titles 
 
 	// Labels
+	'teacherannotations:label:description' => 'Text of the note',
+	'teacherannotations:label:color' => 'Color',
 
 	// River
 
 	// Messages
+	'teacherannotations:error:description' => 'Missing sticky note text',
+	'teacherannotations:error:savestickynote' => 'There was an error saving the sticky note',
+	'teacherannotations:error:invalidstickynote' => 'Invalid sticky note',
+	'teacherannotations:success:savestickynote' => 'Sticky note saved!',
 
 	// Other content
 );

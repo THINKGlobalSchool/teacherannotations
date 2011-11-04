@@ -15,7 +15,7 @@ elgg.provide('elgg.teacherannotations');
 
 // Init function
 elgg.teacherannotations.init = function() {
-	console.log('TA LOADED');
+	
 }
 
 elgg.register_hook_handler('init', 'system', elgg.teacherannotations.init);
