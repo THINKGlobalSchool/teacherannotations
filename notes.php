@@ -23,14 +23,7 @@ $options = array(
 $notes = elgg_get_entities($options);
 
 foreach($notes as $note) {
-	$owner = $note->getOwnerEntity();
-	$notes_content .= <<<HTML
-		<div class="ta-sticky-note ta-draggable {$note->color}" style="left:{$note->x}px;top:{$note->y}px;z-index:{$note->z};">
-			$note->description
-			<div class="ta-sticky-note-author">$owner->name</div>
-			<span class="data">$note->guid</span>
-		</div>
-HTML;
+	$notes_content .= elgg_view('teacherannotations/stickynote', array('entity' => $note));
 }
 
 $params['content'] = <<<HTML

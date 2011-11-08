@@ -17,7 +17,7 @@ var zIndex = 0;
 
 // Init function
 elgg.teacherannotations.stickynotes.init = function() {
-	
+
 	// temp variable for sticky z-indexes
 	var tmp;
 
@@ -48,12 +48,18 @@ elgg.teacherannotations.stickynotes.init = function() {
 
 	// Changing the color of the preview note:
 	$('.ta-sticky-note-color').live('click',function(){
-		$('#ta-sticky-note-preview').removeClass('yellow green blue').addClass($(this).attr('class').replace('color',''));
+		$('#ta-sticky-note-preview')
+			.removeClass('yellow green blue')
+			.addClass($.trim($(this).attr('class').replace('ta-sticky-note-color','')));
 	});
-	
+
 	// Submit button
 	$("#ta-sticky-submit").live('click', function(event) {
-		$(this).replaceWith("<div class='elgg-ajax-loader'></div>");
+		// Grab a copy of the submit button
+		$_submit = $(this);
+
+		// Replace with spinner
+		$(this).replaceWith("<div id='ta-sticky-submit' class='elgg-ajax-loader'></div>");
 
 		var $inputs = $("#ta-add-sticky-form :input");
 
@@ -72,35 +78,51 @@ elgg.teacherannotations.stickynotes.init = function() {
 			},
 			success: function(data) {
 				if (data.status != -1) {
+					// Clone our preview note to add it to the page
 					var tmp = $("#ta-sticky-note-preview").clone();
 					
+					// Grab the note guid
 					tmp.find('span.data').text(data.output).end().css({'z-index':zIndex,top:0,left:0});
 					tmp.attr('id', '');
 					tmp.appendTo($("#ta-sticky-notes-main"));
 					
+					// Make it draggable
 					elgg.teacherannotations.stickynotes.makeDraggable(tmp);
-					
+
+					// Close form
 					$.fancybox.close();
+
+					// Reset form
+					$("#ta-sticky-submit").replaceWith($_submit);
+
+					$inputs.each(function() {
+						$(this).val('');
+					});
+
+					// Clear preview note
+					$("#ta-sticky-note-preview")
+						.removeClass('yellow green blue')
+						.addClass('yellow')
+						.find(".ta-sticky-note-body").html('');
 				}
 			}
 		});
-
 		event.preventDefault();
 	});
 }
 
 // Make draggable helper function
 elgg.teacherannotations.stickynotes.makeDraggable = function(elements) {
-
 	// Elements is a jquery object: 
-	elements.draggable({
-		containment: 'parent',
+	elements.appendTo('body').draggable({
+		containment: 'window', // was 'parent' by default
 		start: function(e,ui) { 
 			ui.helper.css('z-index',++zIndex);
 		},
 		stop: function(e,ui) {			
 			elgg.action('teacherannotations/stickynote/save', {
 				data: {
+					quiet: true,
 					z: zIndex,
 					x: ui.position.left,
 					y: ui.position.top,
@@ -108,7 +130,7 @@ elgg.teacherannotations.stickynotes.makeDraggable = function(elements) {
 				},
 				success: function(data) {
 					if (data.status != -1) {
-						console.log('updated');
+						// ..
 					}
 				}
 			});	

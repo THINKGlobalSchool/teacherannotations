@@ -11,6 +11,7 @@
  */
 
 $guid = get_input('guid', NULL);
+$quiet = get_input('quiet', FALSE);
 
 if (!$guid) {
 	$description = get_input('description');
@@ -20,7 +21,10 @@ if (!$guid) {
 	$y = get_input('y', 0);
 
 	if (!$description) {
-		register_error(elgg_echo('teacherannotations:error:description'));
+		if (!$quiet) {
+			register_error(elgg_echo('teacherannotations:error:description'));
+		}
+		forward(REFERER);
 	}
 
 	$note = new ElggObject();
@@ -31,7 +35,9 @@ if (!$guid) {
 } else {
 	$note = get_entity($guid);
 	if (!elgg_instanceof($note, 'object', 'ta_sticky_note')) {
-		register_error(elgg_echo('teacherannotations:error:invalidstickynote'));
+		if (!$quiet) {
+			register_error(elgg_echo('teacherannotations:error:invalidstickynote'));
+		}
 		forward(REFERER);
 	}
 	
@@ -45,11 +51,15 @@ $note->x = $x;
 $note->y = $y;
 
 if (!$note->save()) {
-	register_error(elgg_echo('teacherannotations:error:savestickynote'));
+	if ($quiet) {
+		register_error(elgg_echo('teacherannotations:error:savestickynote'));
+	}
 	forward(REFERER);
 }
 
 // @TODO Relationships?
-system_message(elgg_echo('teacherannotations:success:savestickynote'));
+if (!$quiet) {
+	system_message(elgg_echo('teacherannotations:success:savestickynote'));
+}
 echo $note->guid;
 forward(REFERER);
