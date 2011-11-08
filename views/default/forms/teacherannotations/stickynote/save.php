@@ -26,14 +26,24 @@ $submit_input = elgg_view('input/submit', array(
 ));
 
 $owner = elgg_get_logged_in_user_entity();
+$owner_icon = elgg_view_entity_icon($owner, 'tiny', array('class' => 'hidden'));
 
 $content = <<<HTML
 	<h3>Add a new note</h3>
 	
 	<!-- Preview -->
 	<div id="ta-sticky-note-preview" class="ta-sticky-note yellow" style="left:0;top:35px;z-index:1">
+		<div class="ta-sticky-note-author">
+			$owner_icon
+			<div class="ta-sticky-note-author-info">
+				<!-- not sure about the owner name here... names *could* be long {$owner->name}<br /> -->
+				<span class="elgg-subtext"></span>
+				<span class="ta-sticky-note-actions">
+				</span>
+			</div>
+			<div style="clear: both;"></div>
+		</div>
 		<div class="ta-sticky-note-body"></div>
-		<div class="ta-sticky-note-author">{$owner->name}</div>
 		<span class="data"></span>
 	</div>
 	
@@ -45,6 +55,8 @@ $content = <<<HTML
 		<div class="ta-sticky-note-color yellow"></div>
 		<div class="ta-sticky-note-color blue"></div>
 		<div class="ta-sticky-note-color green"></div>
+		<div class="ta-sticky-note-color orange"></div>
+		<div class="ta-sticky-note-color purple"></div>
 		<!-- Submit -->
 		<div style="clear:both;"></div>
 		<br />$submit_input

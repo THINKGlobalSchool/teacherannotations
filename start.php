@@ -24,6 +24,8 @@ function teacher_annotations_init() {
 	define("TA_COLOR_YELLOW", 'yellow');
 	define("TA_COLOR_BLUE", 'blue');
 	define("TA_COLOR_GREEN", 'green');
+	define("TA_COLOR_ORANGE", 'orange');
+	define("TA_COLOR_PURPLE", 'purple');
 
 	// Register and load library
 	elgg_register_library('elgg:teacherannotations', elgg_get_plugins_path() . 'teacherannotations/lib/teacherannotations.php');
@@ -58,6 +60,7 @@ function teacher_annotations_init() {
 	// Register actions
 	$action_base = elgg_get_plugins_path() . 'teacherannotations/actions/teacherannotations';
 	elgg_register_action('teacherannotations/stickynote/save', "$action_base/stickynote/save.php");
+	elgg_register_action('teacherannotations/stickynote/delete', "$action_base/stickynote/delete.php");
 
 	return TRUE;
 }

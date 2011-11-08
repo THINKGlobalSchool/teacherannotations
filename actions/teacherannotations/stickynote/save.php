@@ -61,5 +61,17 @@ if (!$note->save()) {
 if (!$quiet) {
 	system_message(elgg_echo('teacherannotations:success:savestickynote'));
 }
-echo $note->guid;
+
+$time = $note->time_updated;
+if (!$time) {
+	$time = time();
+}
+
+$friendly_time = elgg_get_friendly_time($time);
+
+echo json_encode(array(
+	'guid' =>$note->guid,
+	'time' => $time,
+	'friendly_time' => $friendly_time
+));
 forward(REFERER);

@@ -47,6 +47,17 @@
 	border: 1px solid #98E775;
 }
 
+.ta-sticky-note.orange, .ta-sticky-note-color.orange {
+	background: #FFA54C;
+	border: 1px solid #f28e50;
+}
+
+.ta-sticky-note.purple, .ta-sticky-note-color.purple {
+	background: #eaafe3;
+	border: 1px solid #BAACA2;
+}
+
+
 .ta-sticky-note span.data { 
 	display:none;
 }
@@ -60,11 +71,28 @@
 }
 
 .ta-sticky-note-author {
-	bottom: 5px;
-	color: #666666;
-	font-size: 12px;
-	position: absolute;
-	right: 10px;
+	color: #333;
+	font-size: 11px;
+}
+
+.ta-sticky-note-author .elgg-avatar {
+	float: left;
+}
+
+.ta-sticky-note-author .ta-sticky-note-author-info {
+	float: left;
+	padding-left: 4px;
+	margin-top: -5px;
+}
+
+.ta-sticky-note-author .elgg-subtext {
+	color: inherit;
+}
+
+.ta-sticky-note-actions {
+	display: block;
+	margin-top: -6px;
+	font-size: 10px;
 }
 
 #ta-sticky-notes-main {
