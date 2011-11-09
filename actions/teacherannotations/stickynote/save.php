@@ -14,8 +14,8 @@ $guid = get_input('guid', NULL);
 $quiet = get_input('quiet', FALSE);
 
 if (!$guid) {
-	$description = get_input('description', NULL);
 	$color = get_input('color', TA_COLOR_YELLOW);
+	$description = get_input('description', NULL);
 	$z = get_input('z', 0);
 	$x = get_input('x', 0);
 	$y = get_input('y', 0);
@@ -23,7 +23,6 @@ if (!$guid) {
 	$note = new ElggObject();
 	$note->subtype = 'ta_sticky_note';
 	$note->access_id = ACCESS_LOGGED_IN; //@TODO	
-	$note->color = $color;	
 } else {
 	$note = get_entity($guid);
 	if (!elgg_instanceof($note, 'object', 'ta_sticky_note')) {
@@ -39,6 +38,7 @@ if (!$guid) {
 		$description = NULL;
 	}
 
+	$color = get_input('color', $note->color);
 	$z = get_input('z', $note->z);
 	$x = get_input('x', $note->x);
 	$y = get_input('y', $note->y);
@@ -52,6 +52,7 @@ if ($description === NULL) {
 }
 
 $note->description = $description;
+$note->color = $color;
 $note->z = $z;
 $note->x = $x;
 $note->y = $y;

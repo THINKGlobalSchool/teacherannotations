@@ -52,11 +52,11 @@ $content = <<<HTML
 		<label>$description_label</label>
 		$description_input
 		<label>$color_label</label>
-		<div class="ta-sticky-note-color yellow"></div>
-		<div class="ta-sticky-note-color blue"></div>
-		<div class="ta-sticky-note-color green"></div>
-		<div class="ta-sticky-note-color orange"></div>
-		<div class="ta-sticky-note-color purple"></div>
+		<div class="ta-sticky-note-color yellow preview"></div>
+		<div class="ta-sticky-note-color blue preview"></div>
+		<div class="ta-sticky-note-color green preview"></div>
+		<div class="ta-sticky-note-color orange preview"></div>
+		<div class="ta-sticky-note-color purple preview"></div>
 		<!-- Submit -->
 		<div style="clear:both;"></div>
 		<br />$submit_input

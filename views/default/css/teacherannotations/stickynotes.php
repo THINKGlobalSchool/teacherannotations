@@ -108,16 +108,6 @@
 	font-size: 10px;
 }
 
-#ta-sticky-notes-main {
-	/* Contains all the notes and limits their movement: */
-	margin: 0 auto;
-	position:relative;
-	width: 100%;
-	height: 100%;
-	z-index: 10;
-	background:url(img/add_a_note_help.gif) no-repeat left top;
-}
-
 .ta-sticky-note-edit-body {
 	height: 100px;
 	-webkit-border-radius: 0;
@@ -126,6 +116,18 @@
 	padding: 2px;
 	border: 1px solid #666;
 	background: rgba(255, 255, 255, 0.6);
+}
+
+.ta-sticky-note-edit-color {
+	float: right;
+	background: #FFFFFF;
+	padding: 3px 0 3px 3px;
+	margin-top: 1px;
+	border: 1px solid #AAA;
+}
+
+.ta-sticky-note-edit-color .ta-sticky-note-color {
+	margin-right: 3px;
 }
 
 .ta-sticky-notes-edit-submit-button {

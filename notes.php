@@ -27,10 +27,8 @@ foreach($notes as $note) {
 }
 
 $params['content'] = <<<HTML
-	<div id="ta-sticky-notes-main">
-		<a id="ta-sticky-note-add" class="elgg-lightbox" href="#ta-add-sticky-form">Add</a>
-		$notes_content
-	</div>
+	<a id="ta-sticky-note-add" class="elgg-lightbox" href="#ta-add-sticky-form">Add</a>
+	$notes_content
 	<div id="popup-sticky-form">
 		$add_sticky_form
 	</div>

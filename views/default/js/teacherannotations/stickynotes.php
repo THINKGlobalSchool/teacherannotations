@@ -91,7 +91,7 @@ elgg.teacherannotations.stickynotes.init = function() {
 	});
 
 	// Changing the color of the preview note:
-	$('.ta-sticky-note-color').live('click',function(){
+	$('.ta-sticky-note-color.preview').live('click',function(){
 		$('#ta-sticky-note-preview')
 			.removeClass('yellow green blue orange purple')
 			.addClass($.trim($(this).attr('class').replace('ta-sticky-note-color','')));
@@ -178,6 +178,9 @@ elgg.teacherannotations.stickynotes.init = function() {
 
 	// Edit click handler
 	$('.ta-sticky-note-edit').live('click', elgg.teacherannotations.stickynotes.editClick);
+
+	// Edit color click handler
+	$('.ta-sticky-note-color.edit').live('click', elgg.teacherannotations.stickynotes.editColorClick);
 
 	// Cancel edit click handler
 	$('.ta-sticky-note-cancel').live('click', elgg.teacherannotations.stickynotes.cancelEditClick);
@@ -289,25 +292,44 @@ elgg.teacherannotations.stickynotes.editClick = function(event) {
 	// Create save button
 	$save = $("<input class='ta-sticky-notes-edit-submit-button elgg-button elgg-button-submit' type='submit' value='Save' name='ta-sticky-note-edit-submit' />");
 
+	// Create color inputs
+	$colors = $("<div class='ta-sticky-note-edit-color'><div class='ta-sticky-note-color edit yellow'></div><div class='ta-sticky-note-color edit blue'></div><div class='ta-sticky-note-color edit green'></div><div class='ta-sticky-note-color edit orange'></div><div class='ta-sticky-note-color edit purple'></div></div>");
+
 	// Add new content to the body div
 	$body.html($textarea);
 	$body.append($save);
+	$body.append($colors);
 
 	$textarea.focus();
 
 	event.preventDefault();
 }
 
-// Click handler for cancel edit
+// Click handler for editing a notes color
+elgg.teacherannotations.stickynotes.editColorClick = function(event){
+	var $note = $(this).closest('.ta-sticky-note');
+
+	$note.data('original_class', $note.attr('class'));
+
+	var color = $.trim($(this).attr('class').replace('ta-sticky-note-color',''));
+
+	$note.removeClass('yellow green blue orange purple').addClass(color);
+
+	$note.data('new_color', color);
+}
+
+// Edit note submit handler
 elgg.teacherannotations.stickynotes.editNote = function(event) {
 	var $note = $(this).closest('.ta-sticky-note');
 	var guid = parseInt($note.find('span.data').html());
 	var body = $note.find('textarea').val();
+	var color = $note.data('new_color');
 
 	elgg.action('teacherannotations/stickynote/save', {
 		data: {
 			guid: guid,
 			description: body,
+			color: color,
 		},
 		success: function(data) {
 			if (data.status != -1) {
@@ -335,6 +357,9 @@ elgg.teacherannotations.stickynotes.cancelEditClick = function(event) {
 
 	// Replace the textarea with the original value
 	$body.html($textarea.data('original'));
+
+	// Replace note class to reset color
+	$note.attr('class', $note.data('original_class'));
 
 	event.preventDefault();
 }
