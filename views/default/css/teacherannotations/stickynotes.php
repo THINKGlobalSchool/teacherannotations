@@ -23,9 +23,22 @@
 	cursor: move;
 	font-size: 16px;
 	line-height: 20px;
-	-moz-box-shadow: 2px 2px 0 #DDDDDD;
-	-webkit-box-shadow: 2px 2px 0 #DDDDDD;
-	box-shadow: 2px 2px 0 #DDDDDD;
+	-moz-box-shadow: 1px 1px 3px #666;
+	-webkit-box-shadow: 1px 1px 3px #666;
+	box-shadow: 1px 1px 3px #666;
+}
+
+#ta-sticky-notes-container {
+	position: absolute;
+	overflow: visible;
+	height: 1px;
+	width: 1px;
+}
+
+#ta-sticky-notes-boundary {
+	position: absolute;
+	overflow: visible;
+	z-index: -1;
 }
 
 #ta-sticky-note-preview {

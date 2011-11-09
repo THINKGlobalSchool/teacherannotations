@@ -18,6 +18,48 @@ elgg.teacherannotations.stickynotes.zIndex = 0;
 // Init function
 elgg.teacherannotations.stickynotes.init = function() {
 
+	// Create new container box, this will 'contain' the sticky notes
+	// It has a width/height of 1px, with overflow: visible
+	$('body').append("<div id='ta-sticky-notes-container'></div>");
+
+	// Create new boundary box, this box has a z-index of -1 and acts
+	// as the boundary mask for sticky notes
+	$('body').append("<div id='ta-sticky-notes-boundary'></div>")
+
+	// Size the container box
+	$("#ta-sticky-notes-container").css({
+		left: $('.elgg-page-body > .elgg-inner').offset().left + 'px',
+		top: $('.elgg-page-topbar').height() + 'px',
+	});
+
+	// Size the boundary box
+	$("#ta-sticky-notes-boundary").css({
+		left: $('.elgg-page-body > .elgg-inner').offset().left + 'px',
+		top: $('.elgg-page-topbar').height() + 'px',
+		width: $('.elgg-page-body > .elgg-inner').width() + 'px',
+		height: ($('.elgg-page').height() - $('.elgg-page-topbar').height()) + 'px',
+	});
+
+	// Need to update some elements if the window resizes
+	$(window).resize(function(event) {
+		// Align the boundary and container with the elgg-inner div
+		$("#ta-sticky-notes-boundary").css({left: $('.elgg-page-body > .elgg-inner').offset().left + 'px'});
+		$("#ta-sticky-notes-container").css({left: $('.elgg-page-body > .elgg-inner').offset().left + 'px'});
+
+		// Grab the boundary box
+		var $boundary = $("#ta-sticky-notes-boundary");
+
+		// Calulate the x,y values for draggable containment
+		// Note: This should be smarter.. that 171 is a fixed width..
+		var x1 = $boundary.offset().left;
+		var y1 = $boundary.offset().top;
+		var x2 = $boundary.offset().left + $boundary.width() - 171;
+		var y2 = $boundary.offset().top + $boundary.height() - 171;
+
+		// Update draggable containment for notes
+		$('.ta-sticky-note.ta-draggable').draggable("option", "containment", [x1, y1, x2, y2])
+	});
+
 	// temp variable for sticky z-indexes
 	var tmp;
 
@@ -75,8 +117,8 @@ elgg.teacherannotations.stickynotes.init = function() {
 				description: values['description'],
 				color: $.trim($('#ta-sticky-note-preview').attr('class').replace('ta-sticky-note','')),
 				z: ++elgg.teacherannotations.stickynotes.zIndex,
-				x: 0,
-				y: 0,
+				x: 45,
+				y: 55,
 			},
 			success: function(data) {
 				if (data.status != -1) {
@@ -105,7 +147,7 @@ elgg.teacherannotations.stickynotes.init = function() {
 					tmp.addClass('ta-actionable');
 
 					// Append to page
-					tmp.appendTo($("#ta-sticky-notes-main"));
+					tmp.addClass('hidden').appendTo($("#ta-sticky-notes-container")).fadeIn();
 
 					// Make it draggable
 					elgg.teacherannotations.stickynotes.makeDraggable(tmp);
@@ -137,9 +179,20 @@ elgg.teacherannotations.stickynotes.init = function() {
 
 // Make draggable helper function
 elgg.teacherannotations.stickynotes.makeDraggable = function(elements) {
+	// Grab the boundary box
+	var $boundary = $("#ta-sticky-notes-boundary");
+
+	// Calculate boundary values
+	var x1 = $boundary.offset().left;
+	var y1 = $boundary.offset().top;
+	var x2 = $boundary.offset().left + $boundary.width() - 171;
+	var y2 = $boundary.offset().top + $boundary.height() - 171;
+
 	// Elements is a jquery object: 
-	elements.appendTo('body').draggable({
-		containment: 'window', // was 'parent' by default
+	elements.appendTo('#ta-sticky-notes-container').fadeIn().draggable({
+		//containment: 'window', // was 'parent' by default
+		//containment: '#ta-sticky-notes-boundary',
+		containment: [x1,y1,x2,y2], // Dynamic coords
 		start: function(e,ui) { 
 			ui.helper.css('z-index',++elgg.teacherannotations.stickynotes.zIndex);
 		},
