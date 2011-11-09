@@ -14,6 +14,8 @@
  * TODO:
  * - Figure out permissions for sticky notes
  * - Object relationship for sticky notes
+ * - Smarter z-index?
+ * - How big do we want these notes to get? Limit characters?
  */
 
 elgg_register_event_handler('init', 'system', 'teacher_annotations_init');

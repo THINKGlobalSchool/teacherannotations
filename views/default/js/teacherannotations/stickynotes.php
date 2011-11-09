@@ -173,8 +173,17 @@ elgg.teacherannotations.stickynotes.init = function() {
 		event.preventDefault();
 	});
 
+	// Delete click handler
 	$('.ta-sticky-note-delete').live('click', elgg.teacherannotations.stickynotes.deleteNote);
-	//$('.ta-sticky-note-edit').live('click', elgg.teacherannotations.stickynotes.edit);
+
+	// Edit click handler
+	$('.ta-sticky-note-edit').live('click', elgg.teacherannotations.stickynotes.editClick);
+
+	// Cancel edit click handler
+	$('.ta-sticky-note-cancel').live('click', elgg.teacherannotations.stickynotes.cancelEditClick);
+
+	// Edit submit handler
+	$('.ta-sticky-notes-edit-submit-button').live('click', elgg.teacherannotations.stickynotes.editNote);
 }
 
 // Make draggable helper function
@@ -189,7 +198,7 @@ elgg.teacherannotations.stickynotes.makeDraggable = function(elements) {
 	var y2 = $boundary.offset().top + $boundary.height() - 171;
 
 	// Elements is a jquery object: 
-	elements.appendTo('#ta-sticky-notes-container').fadeIn().draggable({
+	elements.appendTo('#ta-sticky-notes-container').fadeIn('slow').draggable({
 		//containment: 'window', // was 'parent' by default
 		//containment: '#ta-sticky-notes-boundary',
 		containment: [x1,y1,x2,y2], // Dynamic coords
@@ -227,10 +236,10 @@ elgg.teacherannotations.stickynotes.onMousedown = function(event) {
 
 	$(this).css({
 		opacity: 1,
-		'z-index': ++elgg.teacherannotations.stickynotes.zIndex,
+		//'z-index': elgg.teacherannotations.stickynotes.zIndex++, don't think I need to do this..
 	});
 
-	event.preventDefault();
+	//event.preventDefault(); Don't do this either
 }
 
 // Delete sticky note
@@ -251,6 +260,82 @@ elgg.teacherannotations.stickynotes.deleteNote = function(event) {
 			}
 		}
 	});
+	event.preventDefault();
+}
+
+// Click handler for edit note
+elgg.teacherannotations.stickynotes.editClick = function(event) {
+	var $_this = $(this);
+	var guid = $(this).attr('href');
+	var $note = $(this).closest('.ta-sticky-note');
+	var $body = $note.find('div.ta-sticky-note-body');
+	var value = $body.html();
+
+	// Create cancel link
+	$cancel = $("<a href='" + guid + "' class='ta-sticky-note-cancel' >Cancel</a>");
+
+	// Replace edit link with cancel
+	$(this).replaceWith($cancel);
+
+	// Store the edit link as data within the cancel link
+	$cancel.data('original', $_this);
+
+	// Create the textarea
+	$textarea = $("<textarea class='ta-sticky-note-edit-body' name='body'>" +  value + "</textarea>");
+
+	// Store original value as data within the textarea
+	$textarea.data('original', value);
+
+	// Create save button
+	$save = $("<input class='ta-sticky-notes-edit-submit-button elgg-button elgg-button-submit' type='submit' value='Save' name='ta-sticky-note-edit-submit' />");
+
+	// Add new content to the body div
+	$body.html($textarea);
+	$body.append($save);
+
+	$textarea.focus();
+
+	event.preventDefault();
+}
+
+// Click handler for cancel edit
+elgg.teacherannotations.stickynotes.editNote = function(event) {
+	var $note = $(this).closest('.ta-sticky-note');
+	var guid = parseInt($note.find('span.data').html());
+	var body = $note.find('textarea').val();
+
+	elgg.action('teacherannotations/stickynote/save', {
+		data: {
+			guid: guid,
+			description: body,
+		},
+		success: function(data) {
+			if (data.status != -1) {
+				// Replace inputs with body value
+				$note.find('div.ta-sticky-note-body').html(body);
+
+				// Replace cancel link with edit link
+				$cancel = $note.find('.ta-sticky-note-cancel');
+				$cancel.replaceWith($cancel.data('original'));
+			}
+		}
+	});
+
+	event.preventDefault();
+}
+
+// Click handler for cancel edit
+elgg.teacherannotations.stickynotes.cancelEditClick = function(event) {
+	var $note = $(this).closest('.ta-sticky-note');
+	var $body = $note.find('div.ta-sticky-note-body');
+	var $textarea = $note.find("textarea");
+
+	// Replace this cancel link with the origan edit link
+	$(this).replaceWith($(this).data('original'));
+
+	// Replace the textarea with the original value
+	$body.html($textarea.data('original'));
+
 	event.preventDefault();
 }
 

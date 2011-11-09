@@ -118,6 +118,22 @@
 	background:url(img/add_a_note_help.gif) no-repeat left top;
 }
 
+.ta-sticky-note-edit-body {
+	height: 100px;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	padding: 2px;
+	border: 1px solid #666;
+	background: rgba(255, 255, 255, 0.6);
+}
+
+.ta-sticky-notes-edit-submit-button {
+	height: 22px;
+	font-size: 11px;
+	padding: 0 4px;
+}
+
 #ta-sticky-note-data {
 	/* The input form in the pop-up: */
 	height: 200px;

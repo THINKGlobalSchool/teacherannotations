@@ -14,23 +14,15 @@ $guid = get_input('guid', NULL);
 $quiet = get_input('quiet', FALSE);
 
 if (!$guid) {
-	$description = get_input('description');
+	$description = get_input('description', NULL);
 	$color = get_input('color', TA_COLOR_YELLOW);
 	$z = get_input('z', 0);
 	$x = get_input('x', 0);
 	$y = get_input('y', 0);
 
-	if (!$description) {
-		if (!$quiet) {
-			register_error(elgg_echo('teacherannotations:error:description'));
-		}
-		forward(REFERER);
-	}
-
 	$note = new ElggObject();
 	$note->subtype = 'ta_sticky_note';
 	$note->access_id = ACCESS_LOGGED_IN; //@TODO	
-	$note->description = $description;
 	$note->color = $color;	
 } else {
 	$note = get_entity($guid);
@@ -40,12 +32,26 @@ if (!$guid) {
 		}
 		forward(REFERER);
 	}
-	
+
+	$description = get_input('description', $note->description);
+
+	if (($description !== "0" && $description !== 0) && empty($description)) {
+		$description = NULL;
+	}
+
 	$z = get_input('z', $note->z);
 	$x = get_input('x', $note->x);
 	$y = get_input('y', $note->y);
 }
 
+if ($description === NULL) {
+	if (!$quiet) {
+		register_error(elgg_echo('teacherannotations:error:description'));
+	}
+	forward(REFERER);
+}
+
+$note->description = $description;
 $note->z = $z;
 $note->x = $x;
 $note->y = $y;
