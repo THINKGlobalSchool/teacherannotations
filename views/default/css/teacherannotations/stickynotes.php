@@ -15,14 +15,12 @@
 }
 
 .ta-sticky-note {
-	height: 150px;
+	min-height: 165px;
 	padding: 10px;
-	width: 150px;
+	width: 165px;
 	position: absolute;
 	overflow: hidden;
 	cursor: move;
-	font-size: 16px;
-	line-height: 20px;
 	-moz-box-shadow: 1px 1px 3px #666;
 	-webkit-box-shadow: 1px 1px 3px #666;
 	box-shadow: 1px 1px 3px #666;
@@ -43,6 +41,14 @@
 
 #ta-sticky-note-preview {
 	cursor: default;
+}
+
+.ta-sticky-note-color {
+	cursor: pointer;
+	float: left;
+	height: 14px;
+	margin: 0 5px 0 0;
+	width: 14px;
 }
 
 .ta-sticky-note.yellow, .ta-sticky-note-color.yellow {
@@ -76,11 +82,13 @@
 }
 
 #ta-sticky-note-add {
-	/*position:absolute;
-	top:-70px;
-	left:0;
-	*/
 	float: right;
+}
+
+#ta-sticky-note-add-form {
+	height: 200px;
+	margin: 10px 0 0 200px;
+	width: 350px;
 }
 
 .ta-sticky-note-author {
@@ -95,17 +103,25 @@
 .ta-sticky-note-author .ta-sticky-note-author-info {
 	float: left;
 	padding-left: 4px;
-	margin-top: -5px;
+	margin-top: -2px;
 }
 
 .ta-sticky-note-author .elgg-subtext {
 	color: inherit;
+	display: block;
+	margin-top: -2px;
 }
 
 .ta-sticky-note-actions {
-	display: block;
-	margin-top: -6px;
 	font-size: 10px;
+}
+
+.ta-sticky-note-body {
+	font-size: 105%;
+}
+
+.ta-sticky-note-edit-container {
+
 }
 
 .ta-sticky-note-edit-body {
@@ -136,26 +152,52 @@
 	padding: 0 4px;
 }
 
-#ta-sticky-note-data {
-	/* The input form in the pop-up: */
-	height: 200px;
-	margin: 10px 0 0 200px;
-	width: 350px;
+.ta-sticky-note-comments-container {
+	font-size: 11px;
 }
 
-#ta-add-sticky-form {
+.ta-sticky-note-comment-list {
+	margin-top: 10px;
+}
+
+.ta-sticky-note-comment-list .elgg-list, .ta-sticky-note-comment-list .elgg-list > li {
+	border-top: 0 none;
+	border-bottom: 0 none;
+}
+
+.ta-sticky-note-comment-list h3 {
+	border-top: 1px dotted #999;
+	padding-top: 3px;
+}
+
+.ta-sticky-note-comment-list .elgg-output {
+	margin-top: 3px;
+}
+
+.ta-sticky-note-comment-list .elgg-subtext {
+	margin-bottom: 3px;
+	color: inherit;
+	display: block;
+	margin-top: -2px;
+}
+
+.ta-sticky-note-comment, .ta-sticky-note-comment-cancel {
+	float: right;
+}
+
+#ta-add-sticky-note-form {
 	padding: 3px;
 	height: auto;
 	width: auto;
 }
 
-#ta-add-sticky-form label {
+#ta-add-sticky-note-form label {
 	display: block;
 	font-weight: bold;
 	padding-bottom: 3px;
 }
 
-#ta-add-sticky-form textarea, .note-form input[type=text]{
+#ta-add-sticky-note-form textarea, .note-form input[type=text]{
 	background-color: #FCFCFC;
 	border: 1px solid #AAAAAA;
 	font-size: 16px;
@@ -165,14 +207,6 @@
 	margin-bottom: 10px;
 }
 
-#ta-add-sticky-form input[type=text] {
+#ta-add-sticky-note-form input[type=text] {
 	height: auto;
-}
-
-.ta-sticky-note-color {
-	cursor: pointer;
-	float: left;
-	height: 14px;
-	margin: 0 5px 0 0;
-	width: 14px;
 }

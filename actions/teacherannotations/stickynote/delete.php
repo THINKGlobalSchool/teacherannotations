@@ -1,6 +1,6 @@
 <?php
 /**
- * Teacher Annotations Resolve Sticky Note Action
+ * Teacher Annotations Delete Sticky Note Action
  *
  * @package TeacherAnnotations
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2

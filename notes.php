@@ -1,6 +1,7 @@
 <?php
 /* Notes Demo */
 elgg_load_css('lightbox');
+gatekeeper();
 
 $params = array(
 	'filter' => '',
@@ -8,8 +9,8 @@ $params = array(
 );
 
 $form_vars = array(
-	'id' => 'ta-add-sticky-form', 
-	'name' => 'ta-add-sticky-form'
+	'id' => 'ta-add-sticky-note-form',
+	'name' => 'ta-add-sticky-note-form'
 );
 
 $add_sticky_form = elgg_view_form('teacherannotations/stickynote/save', $form_vars);
@@ -27,7 +28,7 @@ foreach($notes as $note) {
 }
 
 $params['content'] = <<<HTML
-	<a id="ta-sticky-note-add" class="elgg-lightbox" href="#ta-add-sticky-form">Add</a>
+	<a id="ta-sticky-note-add" class="elgg-lightbox" href="#ta-add-sticky-note-form">Add</a>
 	$notes_content
 	<div id="popup-sticky-form">
 		$add_sticky_form

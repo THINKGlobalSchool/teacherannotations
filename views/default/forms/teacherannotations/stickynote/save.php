@@ -1,6 +1,6 @@
 <?php
 /**
- * Teacher Annotations JS Library
+ * Teacher Annotations Save Form
  *
  * @package TeacherAnnotations
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -27,6 +27,7 @@ $submit_input = elgg_view('input/submit', array(
 
 $owner = elgg_get_logged_in_user_entity();
 $owner_icon = elgg_view_entity_icon($owner, 'tiny', array('class' => 'hidden'));
+$owner_link = "<a href='{$owner->getURL()}'>{$owner->name}</a>";
 
 $content = <<<HTML
 	<h3>Add a new note</h3>
@@ -37,18 +38,22 @@ $content = <<<HTML
 			$owner_icon
 			<div class="ta-sticky-note-author-info">
 				<!-- not sure about the owner name here... names *could* be long {$owner->name}<br /> -->
+				<span>{$owner_link}</span>
 				<span class="elgg-subtext"></span>
-				<span class="ta-sticky-note-actions">
+				<span class="ta-sticky-note-actions ta-sticky-note-edit-container">
 				</span>
 			</div>
 			<div style="clear: both;"></div>
 		</div>
 		<div class="ta-sticky-note-body"></div>
+		<div class="ta-sticky-note-comments-container">
+			<div class='ta-sticky-note-comment-list'></div>
+		</div>
 		<span class="data"></span>
 	</div>
 	
 	<!-- Note Form -->
-	<div id="ta-sticky-note-data">
+	<div id="ta-sticky-note-add-form">
 		<label>$description_label</label>
 		$description_input
 		<label>$color_label</label>

@@ -12,6 +12,7 @@
 
 $guid = get_input('guid', NULL);
 $quiet = get_input('quiet', FALSE);
+$dragging = get_input('dragging', FALSE);
 
 if (!$guid) {
 	$color = get_input('color', TA_COLOR_YELLOW);
@@ -51,18 +52,31 @@ if ($description === NULL) {
 	forward(REFERER);
 }
 
+
 $note->description = $description;
 $note->color = $color;
+
+// We'll ignore access here (for now) to allow others to move notes
+// @TODO - If I stick with ignoring access for moving, I need to find a more secure way
+$ia = elgg_get_ignore_access();
+
+if ($dragging) {
+	elgg_set_ignore_access(TRUE);
+}
+
 $note->z = $z;
 $note->x = $x;
 $note->y = $y;
 
+
 if (!$note->save()) {
-	if ($quiet) {
+	if (!$quiet) {
 		register_error(elgg_echo('teacherannotations:error:savestickynote'));
 	}
 	forward(REFERER);
 }
+
+elgg_set_ignore_access($ia);
 
 // @TODO Relationships?
 if (!$quiet) {
