@@ -21,8 +21,10 @@ $english = array(
 	'teacherannotations:label:color' => 'Color',
 	'teacherannotations:label:edit' => 'Edit',
 	'teacherannotations:label:delete' => 'Delete',
+	'teacherannotations:label:resolve' => 'Resolve',
 	'teacherannotations:label:cancel' => 'Cancel',
 	'teacherannotations:label:comment' => 'Add Comment',
+	'teacherannotations:label:save' => 'Save',
 
 	// River
 

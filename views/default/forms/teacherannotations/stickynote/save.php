@@ -26,7 +26,7 @@ $submit_input = elgg_view('input/submit', array(
 ));
 
 $owner = elgg_get_logged_in_user_entity();
-$owner_icon = elgg_view_entity_icon($owner, 'tiny', array('class' => 'hidden'));
+$owner_icon = elgg_view_entity_icon($owner, 'tiny');
 $owner_link = "<a href='{$owner->getURL()}'>{$owner->name}</a>";
 
 $content = <<<HTML
@@ -34,7 +34,7 @@ $content = <<<HTML
 	
 	<!-- Preview -->
 	<div id="ta-sticky-note-preview" class="ta-sticky-note yellow" style="left:0;top:35px;z-index:1">
-		<div class="ta-sticky-note-author">
+		<div class="ta-sticky-note-author hidden">
 			$owner_icon
 			<div class="ta-sticky-note-author-info">
 				<!-- not sure about the owner name here... names *could* be long {$owner->name}<br /> -->

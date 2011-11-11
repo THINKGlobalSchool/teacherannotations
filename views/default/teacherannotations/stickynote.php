@@ -20,9 +20,11 @@ $date = elgg_view_friendly_time($note->time_updated);
 if ($note->canEdit()) {
 	$edit_label = elgg_echo('teacherannotations:label:edit');
 	$delete_label = elgg_echo('teacherannotations:label:delete');
+	$resolve_label = elgg_echo('teacherannotations:label:resolve');
 	$edit = <<<HTML
 		<a href="{$note->guid}" class="ta-sticky-note-edit">$edit_label</a> |
-		<a href="{$note->guid}" class="ta-sticky-note-delete">$delete_label</a>
+		<a href="{$note->guid}" class="ta-sticky-note-delete">$delete_label</a> |
+		<a href="{$note->guid}" class="ta-sticky-note-delete">$resolve_label</a>
 HTML;
 } else {
 	$edit = "&nbsp;";

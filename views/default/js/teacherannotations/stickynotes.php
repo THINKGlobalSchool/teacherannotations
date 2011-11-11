@@ -13,10 +13,16 @@
 //<script>
 elgg.provide('elgg.teacherannotations.stickynotes');
 
+// Global z-index variable
 elgg.teacherannotations.stickynotes.zIndex = 0;
+
+// Define sticky note colors
+elgg.teacherannotations.stickynotes.colors = ['yellow', 'green', 'blue', 'orange', 'purple'];
 
 // Init function
 elgg.teacherannotations.stickynotes.init = function() {
+	/** GENERAL INIT TASKS **/
+
 	// temp variable for sticky z-indexes
 	var tmp;
 
@@ -52,13 +58,16 @@ elgg.teacherannotations.stickynotes.init = function() {
 		height: ($page.height() - $topbar.height()) + 'px',
 	});
 
+	/** EVENT HANDLERS **/
+
 	// Need to update some elements if the window resizes
 	$(window).resize(elgg.teacherannotations.stickynotes.onResize);
 
 	// Make sticky notes draggable
 	elgg.teacherannotations.stickynotes.makeDraggable($('.ta-sticky-note.ta-draggable'));
 
-	$('.ta-sticky-note.ta-actionable').live('mousedown', elgg.teacherannotations.stickynotes.onMousedown);
+	// Do something on mousedown???
+	//$('.ta-sticky-note.ta-actionable').live('mousedown', elgg.teacherannotations.stickynotes.onMousedown);
 
 	// Listening for keyup events on fields of the "Add a note" form:
 	$('.ta-sticky-note-preview-body').live('keyup', elgg.teacherannotations.stickynotes.previewKeyup);
@@ -107,8 +116,6 @@ elgg.teacherannotations.stickynotes.makeDraggable = function(elements) {
 
 	// Elements is a jquery object: 
 	elements.appendTo('#ta-sticky-notes-container').fadeIn('slow').draggable({
-		//containment: 'window', // was 'parent' by default
-		//containment: '#ta-sticky-notes-boundary',
 		containment: [x1,y1,x2,y2], // Dynamic coords
 		start: function(e,ui) { 
 			ui.helper.css('z-index',++elgg.teacherannotations.stickynotes.zIndex);
@@ -170,16 +177,33 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 				// Set time
 				tmp.find('span.elgg-subtext').text(data.output.friendly_time).end();
 
-				// Add buttons
-				var edit_label = elgg.echo('teacherannotations:label:edit');
-				var delete_label = elgg.echo('teacherannotations:label:delete');
-				tmp.find('span.ta-sticky-note-edit-container').html("<a href='" + guid + "' class='ta-sticky-note-edit' >" + edit_label + "</a> | <a href='" + guid + "' class='ta-sticky-note-delete'>" + delete_label + "</a>");
+				var actions = ['edit', 'resolve', 'delete'];
+				var links = [];
 
-				// Add comment buttons
-				var comment_label = elgg.echo('teacherannotations:label:comment');
-				tmp.find('div.ta-sticky-note-comments-container').append("<a href='" + guid + "' class='ta-sticky-note-actions  ta-sticky-note-comment'>" + comment_label + "</a>");
+				$edit_container = tmp.find('span.ta-sticky-note-edit-container');
 
-				tmp.find('div.elgg-avatar').removeClass('hidden');
+				for (x in actions) {
+					var $link = $(document.createElement('a'));
+					$link.attr('href', guid);
+					$link.addClass('ta-sticky-note-' + actions[x]);
+					$link.text(elgg.echo('teacherannotations:label:' + actions[x]));
+					$edit_container.append($link);
+
+					// Add a little pipe
+					if (x < actions.length - 1) {
+						$edit_container.append(' | ');
+					}
+				}
+
+				// Add comment button
+				var $comment_link = $(document.createElement('a'));
+				$comment_link.attr('href', guid);
+				$comment_link.attr('class', 'ta-sticky-note-actions ta-sticky-note-comment');
+				$comment_link.text(elgg.echo('teacherannotations:label:comment'));
+				tmp.find('div.ta-sticky-note-comments-container').append($comment_link);
+
+				// Show author info
+				tmp.find('div.ta-sticky-note-author').removeClass('hidden');
 
 				// Set z-index
 				tmp.css({'z-index':elgg.teacherannotations.stickynotes.zIndex,top:"55px",left:"45px"});
@@ -208,7 +232,7 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 
 				// Clear preview note
 				$("#ta-sticky-note-preview")
-					.removeClass('yellow green blue orange purple')
+					.removeClass(elgg.teacherannotations.stickynotes.colors.join(' '))
 					.addClass('yellow')
 					.find(".ta-sticky-note-body").html('');
 			}
@@ -233,11 +257,11 @@ elgg.teacherannotations.stickynotes.previewKeyup = function(event){
 // Click handler for the preview color chooser
 elgg.teacherannotations.stickynotes.previewColorClick = function(event){
 	$('#ta-sticky-note-preview')
-		.removeClass('yellow green blue orange purple')
+		.removeClass(elgg.teacherannotations.stickynotes.colors.join(' '))
 		.addClass($.trim($(this).attr('class').replace('ta-sticky-note-color','')));
 }
 
-// Mousedown helper
+// Mousedown helper (NOT IN USE)
 elgg.teacherannotations.stickynotes.onMousedown = function(event) {
 	$('.ta-sticky-note').each(function(){
 		// Make all other notes slightly transparent
@@ -303,33 +327,52 @@ elgg.teacherannotations.stickynotes.editClick = function(event) {
 	var value = $body.html();
 
 	// Create cancel link
-	var cancel_label = elgg.echo('teacherannotations:label:cancel');
-	$cancel = $("<a href='" + guid + "' class='ta-sticky-note-edit-cancel' >" + cancel_label + "</a>");
-
-	// Replace edit link with cancel
-	$(this).replaceWith($cancel);
+	var $cancel_link = $(document.createElement('a'));
+	$cancel_link.attr('href', guid);
+	$cancel_link.addClass('ta-sticky-note-edit-cancel');
+	$cancel_link.text(elgg.echo('teacherannotations:label:cancel'));
 
 	// Store the edit link as data within the cancel link
-	$cancel.data('original', $_this);
+	$cancel_link.data('original', $_this);
+
+	// Replace edit link with cancel
+	$(this).replaceWith($cancel_link);
 
 	// Hide the comment area
 	$note.find(".ta-sticky-note-comments-container").hide();
 
 	// Create the textarea
-	$textarea = $("<textarea class='ta-sticky-note-edit-body' name='body'>" +  value + "</textarea>");
+	var $textarea = $(document.createElement('textarea'));
+	$textarea.addClass('ta-sticky-note-edit-body');
+	$textarea.attr('name', 'body');
+	$textarea.html(value);
 
 	// Store original value as data within the textarea
 	$textarea.data('original', value);
 
 	// Create save button
-	$save = $("<input class='ta-sticky-notes-edit-submit-button elgg-button elgg-button-submit' type='submit' value='Save' name='ta-sticky-note-edit-submit' />");
-
-	// Create color inputs
-	$colors = $("<div class='ta-sticky-note-edit-color'><div class='ta-sticky-note-color edit yellow'></div><div class='ta-sticky-note-color edit blue'></div><div class='ta-sticky-note-color edit green'></div><div class='ta-sticky-note-color edit orange'></div><div class='ta-sticky-note-color edit purple'></div></div>");
+	var $save = $(document.createElement('input'));
+	$save.attr({
+		class: 'ta-sticky-notes-edit-submit-button elgg-button elgg-button-submit',
+		type: 'submit',
+		value: elgg.echo('teacherannotations:label:save'),
+		name: 'ta-sticky-note-edit-submit'
+	});
 
 	// Add new content to the body div
 	$body.html($textarea);
 	$body.append($save);
+
+	// Create color inputs
+	var $colors = $(document.createElement('div'));
+	$colors.addClass('ta-sticky-note-edit-color');
+
+	for (x in elgg.teacherannotations.stickynotes.colors) {
+		var $color = $(document.createElement('div'));
+		$color.attr('class', 'ta-sticky-note-color edit ' + elgg.teacherannotations.stickynotes.colors[x]);
+		$colors.append($color);
+	}
+
 	$body.append($colors);
 
 	$textarea.focus();
@@ -366,7 +409,7 @@ elgg.teacherannotations.stickynotes.editColorClick = function(event){
 
 	var color = $.trim($(this).attr('class').replace('ta-sticky-note-color',''));
 
-	$note.removeClass('yellow green blue orange purple').addClass(color);
+	$note.removeClass(elgg.teacherannotations.stickynotes.colors.join(' ')).addClass(color);
 
 	$note.data('new_color', color);
 }
@@ -418,20 +461,30 @@ elgg.teacherannotations.stickynotes.commentClick = function(event) {
 	$container = $(this).closest('.ta-sticky-note-comments-container');
 
 	// Create cancel link
-	var cancel_label = elgg.echo('teacherannotations:label:cancel');
-	$cancel = $("<a href='" + guid + "' class='ta-sticky-note-comment-cancel' >" + cancel_label + "</a>");
-
-	// Replace edit link with cancel
-	$(this).replaceWith($cancel);
+	var $cancel_link = $(document.createElement('a'));
+	$cancel_link.attr('href', guid);
+	$cancel_link.addClass('ta-sticky-note-comment-cancel');
+	$cancel_link.text(elgg.echo('teacherannotations:label:cancel'));
 
 	// Store the comment link as data within the cancel link
-	$cancel.data('original', $_this);
+	$cancel_link.data('original', $_this);
 
-	// Create textarea
-	$textarea = $("<textarea class='ta-sticky-note-edit-body' name='comment'></textarea>");
+	// Replace edit link with cancel
+	$(this).replaceWith($cancel_link);
+
+	// Create the textarea
+	var $textarea = $(document.createElement('textarea'));
+	$textarea.addClass('ta-sticky-note-edit-body');
+	$textarea.attr('name', 'comment');
 
 	// Create save button
-	$save = $("<input class='ta-sticky-notes-comment-submit-button elgg-button elgg-button-submit' type='submit' value='Save' name='ta-sticky-note-comment-submit' />");
+	var $save = $(document.createElement('input'));
+	$save.attr({
+		class: 'ta-sticky-notes-comment-submit-button elgg-button elgg-button-submit',
+		type: 'submit',
+		value: elgg.echo('teacherannotations:label:save'),
+		name: 'ta-sticky-note-comment-submit'
+	});
 
 	$container.append($textarea);
 	$container.append($save);
