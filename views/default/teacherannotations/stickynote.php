@@ -23,8 +23,8 @@ if ($note->canEdit()) {
 	$resolve_label = elgg_echo('teacherannotations:label:resolve');
 	$edit = <<<HTML
 		<a href="{$note->guid}" class="ta-sticky-note-edit">$edit_label</a> |
-		<a href="{$note->guid}" class="ta-sticky-note-delete">$delete_label</a> |
-		<a href="{$note->guid}" class="ta-sticky-note-delete">$resolve_label</a>
+		<a href="{$note->guid}" class="ta-sticky-note-resolve">$resolve_label</a> |
+		<a href="{$note->guid}" class="ta-sticky-note-delete">$delete_label</a>
 HTML;
 } else {
 	$edit = "&nbsp;";

@@ -15,6 +15,7 @@
  * - Figure out permissions for sticky notes
  * - Object relationship for sticky notes
  * - How big do we want these notes to get? Limit characters?
+ * - What should happen when we resolve a note?
  * - Annotation notifications
  * - River?
  */
@@ -65,6 +66,7 @@ function teacher_annotations_init() {
 	elgg_register_action('teacherannotations/stickynote/save', "$action_base/stickynote/save.php");
 	elgg_register_action('teacherannotations/stickynote/delete', "$action_base/stickynote/delete.php");
 	elgg_register_action('teacherannotations/stickynote/annotate', "$action_base/stickynote/annotate.php");
+	elgg_register_action('teacherannotations/stickynote/resolve', "$action_base/stickynote/resolve.php");
 
 	return TRUE;
 }

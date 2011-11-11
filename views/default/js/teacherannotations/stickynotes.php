@@ -79,7 +79,10 @@ elgg.teacherannotations.stickynotes.init = function() {
 	$("#ta-sticky-submit").live('click', elgg.teacherannotations.stickynotes.submit);
 
 	// Delete click handler
-	$('.ta-sticky-note-delete').live('click', elgg.teacherannotations.stickynotes.deleteNote);
+	$('.ta-sticky-note-delete').live('click', elgg.teacherannotations.stickynotes.deleteClick);
+
+	// Resolve click handler
+	$('.ta-sticky-note-resolve').live('click', elgg.teacherannotations.stickynotes.resolveClick);
 
 	// Edit click handler
 	$('.ta-sticky-note-edit').live('click', elgg.teacherannotations.stickynotes.editClick);
@@ -298,7 +301,7 @@ elgg.teacherannotations.stickynotes.onResize = function(event) {
 }
 
 // Delete sticky note
-elgg.teacherannotations.stickynotes.deleteNote = function(event) {
+elgg.teacherannotations.stickynotes.deleteClick = function(event) {
 	var guid = $(this).attr('href');
 	var $_this = $(this);
 
@@ -312,6 +315,25 @@ elgg.teacherannotations.stickynotes.deleteNote = function(event) {
 				$_this.closest(".ta-sticky-note").fadeOut(function() {
 					$(this).remove();
 				});
+			}
+		}
+	});
+	event.preventDefault();
+}
+
+// Resolve sticky note
+elgg.teacherannotations.stickynotes.resolveClick = function(event) {
+	var guid = $(this).attr('href');
+	var $_this = $(this);
+
+	// Delete action
+	elgg.action('teacherannotations/stickynote/resolve', {
+		data: {
+			guid: guid
+		},
+		success: function(data) {
+			if (data.status != -1) {
+				// ..
 			}
 		}
 	});

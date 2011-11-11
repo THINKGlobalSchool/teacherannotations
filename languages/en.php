@@ -36,8 +36,10 @@ $english = array(
 	'teacherannotations:error:invalidsticky' => 'Invalid sticky note',
 	'teacherannotations:error:comment' => 'There was an error adding the comment',
 	'teacherannotations:error:commentblank' => 'Missing comment text',
+	'teacherannotations:error:resolvesticky' => 'There was an error marking the sticky note as resolved',
 	'teacherannotations:success:deletesticky' => 'Sticky note deleted!',
 	'teacherannotations:success:savestickynote' => 'Sticky note saved!',
+	'teacherannotations:success:resolvesticky' => 'Sticky note marked as resolved',
 	'teacherannotations:success:comment' => 'Comment Added!',
 
 	// Other content
