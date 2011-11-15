@@ -1,6 +1,6 @@
 <?php
 /**
- * Teacher Annotations Save Form
+ * Teacher Annotations Sticky Note Save Form
  *
  * @package TeacherAnnotations
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -9,6 +9,13 @@
  * @link http://www.thinkglobalschool.com/
  * 
  */
+
+$entity = elgg_extract('entity', $vars, NULL);    // The entity to relate this note to
+$entity_input = elgg_view('input/hidden', array(
+	'name' => 'entity_guid',
+	'id' => 'ta-sticky-note-entity-guid',
+	'value' => $entity->guid
+));
 
 $description_label = elgg_echo('teacherannotations:label:description');
 $description_input = elgg_view('input/plaintext', array(
@@ -65,7 +72,7 @@ $content = <<<HTML
 		<!-- Submit -->
 		<div style="clear:both;"></div>
 		<br />$submit_input
-	
+		$entity_input
 	</div>
 HTML;
 

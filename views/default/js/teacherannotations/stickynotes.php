@@ -163,6 +163,7 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 	elgg.action('teacherannotations/stickynote/save', {
 		data: {
 			description: values['description'],
+			entity_guid: values['entity_guid'],
 			color: $.trim($('#ta-sticky-note-preview').attr('class').replace('ta-sticky-note','')),
 			z: ++elgg.teacherannotations.stickynotes.zIndex,
 			x: 45,

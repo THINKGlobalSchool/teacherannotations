@@ -13,6 +13,7 @@
 $english = array(
 	// Generic
 	'item:object:teacherannotation' => 'Teacher Annotation',
+	'item:object:ta_sticky_note' => 'Sticky Notes',
 
 	// Page titles 
 
@@ -25,6 +26,8 @@ $english = array(
 	'teacherannotations:label:cancel' => 'Cancel',
 	'teacherannotations:label:comment' => 'Add Comment',
 	'teacherannotations:label:save' => 'Save',
+	'teacherannotations:label:stickynotes' => 'Sticky Notes',
+	'teacherannotations:label:add' => 'Add',
 
 	// River
 

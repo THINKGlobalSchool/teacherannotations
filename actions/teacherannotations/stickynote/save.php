@@ -11,6 +11,7 @@
  */
 
 $guid = get_input('guid', NULL);
+$entity_guid = get_input('entity_guid', NULL); // The entity to relate this note to
 $quiet = get_input('quiet', FALSE);
 $dragging = get_input('dragging', FALSE);
 
@@ -78,7 +79,11 @@ if (!$note->save()) {
 
 elgg_set_ignore_access($ia);
 
-// @TODO Relationships?
+// Entity relationship
+if (!$guid && $entity_guid && elgg_instanceof($entity = get_entity($entity_guid), 'object')) {
+	add_entity_relationship($note->guid, TA_STICKY_NOTE_RELATIONSHIP, $entity_guid);
+}
+
 if (!$quiet) {
 	system_message(elgg_echo('teacherannotations:success:savestickynote'));
 }

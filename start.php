@@ -13,7 +13,6 @@
  * 
  * TODO:
  * - Figure out permissions for sticky notes
- * - Object relationship for sticky notes
  * - How big do we want these notes to get? Limit characters?
  * - What should happen when we resolve a note?
  * - Annotation notifications
@@ -30,6 +29,9 @@ function teacher_annotations_init() {
 	define("TA_COLOR_GREEN", 'green');
 	define("TA_COLOR_ORANGE", 'orange');
 	define("TA_COLOR_PURPLE", 'purple');
+
+	// Define relationships
+	define('TA_STICKY_NOTE_RELATIONSHIP', 'ta_sticky_note_added_to'); // Relationship for stickies
 
 	// Register and load library
 	elgg_register_library('elgg:teacherannotations', elgg_get_plugins_path() . 'teacherannotations/lib/teacherannotations.php');
@@ -73,6 +75,9 @@ function teacher_annotations_init() {
 	// Register general entity menu hook
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'teacherannotations_entity_menu_setup', 9999);
 
+	// Hook into the annotations menu to add sticky notes
+	elgg_register_plugin_hook_handler('register', 'menu:teacherannotations', 'teacherannotations_sticky_notes_menu_setup');
+
 	return TRUE;
 }
 
@@ -105,7 +110,23 @@ function teacherannotations_page_handler($page) {
 		$notes = elgg_get_entities($options);
 		
 		foreach($notes as $note) {
-			echo "GUID: $note->guid<br />";
+			$options = array(
+				'type' => 'object',
+				'limit' => 1,
+				'relationship' => TA_STICKY_NOTE_RELATIONSHIP,
+				'relationship_guid' => $note->guid,
+				'inverse_relationship' => FALSE,
+			);
+
+			$obj = elgg_get_entities_from_relationship($options);
+
+			if (!empty($obj)) {
+				$related = $obj[0]->guid;
+			} else {
+				$related = 'NONE!';
+			}
+
+			echo "GUID: $note->guid Related: $related<br />";
 		}
 		
 		$url = elgg_get_site_url() . 'teacherannotations/debug';
@@ -134,7 +155,7 @@ function teacherannotations_page_handler($page) {
  * a full view.. This isn't the greatest.. but it works.
  */
 function teacherannotations_entity_full_view_handler($hook, $type, $result, $params) {
-	if (elgg_get_viewtype() != "default") {
+	if (!elgg_is_logged_in() || elgg_get_viewtype() != "default") {
 		return;
 	}
 
@@ -144,8 +165,14 @@ function teacherannotations_entity_full_view_handler($hook, $type, $result, $par
 
 	// Only dealing with straight up object views here
 	if (strpos($params['view'], 'object/') === 0              // Check that view is an object view
+		&& isset($params['vars']['entity'])                   // Make sure we have an entity
 		&& strpos($params['view'], 'object/elements') !== 0   // Ignore object/elements views
 		&& $params['vars']['full_view']) {                    // Check for full view
+
+		// Double check entity
+		if (!elgg_instanceof($params['vars']['entity'], 'object')) {
+			return $return;
+		}
 
 		// We might not want to attach sticky notes to certain entities..
 		$exceptions = array(
@@ -161,7 +188,74 @@ function teacherannotations_entity_full_view_handler($hook, $type, $result, $par
 			return $return;
 		}
 
-		$result .= "<div class='ta-sticky-notes-extenstion'></div>";
+		// Get annotations menu
+		$content = elgg_view_menu('teacherannotations', array(
+			'entity' => $params['vars']['entity'],
+			'sort_by' => 'priority',
+			'class' => 'elgg-menu-hz'
+		));
+
+		$result .= "<div id='ta-bottom-bar'>$content</div>";
 	}
 	return $result;
+}
+
+/**
+ * Register sticky notes menu items
+ */
+function teacherannotations_sticky_notes_menu_setup($hook, $type, $return, $params) {
+ 	$options = array(
+		'name' => 'ta-sticky-notes',
+		'text' => elgg_echo('teacherannotations:label:stickynotes') . ':&nbsp;',
+		'href' => FALSE,
+		'priority' => 1,
+	);
+
+	$return[] = ElggMenuItem::factory($options);
+
+	$options = array(
+		'name' => 'ta-sticky-note-add',
+		'text' => elgg_echo('teacherannotations:label:add') . $add_sticky_form,
+		'href' => '#ta-add-sticky-note-form',
+		'link_class' => 'elgg-lightbox',
+		'priority' => 2,
+	);
+
+	$return[] = ElggMenuItem::factory($options);
+
+	$form_vars = array(
+		'id' => 'ta-add-sticky-note-form',
+		'name' => 'ta-add-sticky-note-form'
+	);
+
+	$add_sticky_form = '<div id="popup-sticky-form">';
+	$add_sticky_form .= elgg_view_form('teacherannotations/stickynote/save', $form_vars, array('entity' => $params['entity']));
+	$add_sticky_form .= '</div>';
+
+	$options = array(
+		'type' => 'object',
+		'subtype' => 'ta_sticky_note',
+		'limit' => 0,
+		'relationship' => TA_STICKY_NOTE_RELATIONSHIP,
+		'relationship_guid' => $params['entity']->guid,
+		'inverse_relationship' => TRUE,
+	);
+
+	$notes = elgg_get_entities_from_relationship($options);
+
+	foreach($notes as $note) {
+		$notes_content .= elgg_view('teacherannotations/stickynote', array('entity' => $note));
+	}
+
+	$options = array(
+		'name' => 'ta-sticky-notes-content',
+		'text' => $add_sticky_form . $notes_content,
+		'href' => FALSE,
+		'link_class' => 'elgg-lightbox',
+		'priority' => 999,
+	);
+
+	$return[] = ElggMenuItem::factory($options);
+
+	return $return;
 }
