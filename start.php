@@ -217,6 +217,16 @@ function teacherannotations_sticky_notes_menu_setup($hook, $type, $return, $para
 
 	$return[] = ElggMenuItem::factory($options);
 
+	$options = array(
+		'name' => 'ta-sticky-notes-hide',
+		'text' =>  elgg_echo('teacherannotations:label:hide') . $add_sticky_form,
+		'href' => '#',
+		'link_class' => 'ta-sticky-notes-hide',
+		'priority' => 4,
+	);
+
+	$return[] = ElggMenuItem::factory($options);
+
 	$form_vars = array(
 		'id' => 'ta-add-sticky-note-form',
 		'name' => 'ta-add-sticky-note-form'

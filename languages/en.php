@@ -28,6 +28,8 @@ $english = array(
 	'teacherannotations:label:save' => 'Save',
 	'teacherannotations:label:stickynotes' => 'Sticky Notes',
 	'teacherannotations:label:add' => 'Add',
+	'teacherannotations:label:hide' => 'Hide',
+	'teacherannotations:label:show' => 'Show',
 
 	// River
 

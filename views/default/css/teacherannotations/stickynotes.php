@@ -210,3 +210,8 @@
 #ta-add-sticky-note-form input[type=text] {
 	height: auto;
 }
+
+/* Stickynote menu */
+li.elgg-menu-item-ta-sticky-note-add:after, li.elgg-menu-item-ta-sticky-notes-hide:after {
+	content: "\00a0|\00a0"; // Add a pipe between menu items
+}

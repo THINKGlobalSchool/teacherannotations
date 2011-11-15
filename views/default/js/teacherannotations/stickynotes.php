@@ -104,6 +104,12 @@ elgg.teacherannotations.stickynotes.init = function() {
 
 	// Comment submit handler
 	$('.ta-sticky-notes-comment-submit-button').live('click', elgg.teacherannotations.stickynotes.commentSubmit);
+
+	// Hide notes click handler
+	$('.ta-sticky-notes-hide').live('click', elgg.teacherannotations.stickynotes.hideClick);
+
+	// Show notes click handler
+	$('.ta-sticky-notes-show').live('click', elgg.teacherannotations.stickynotes.showClick);
 }
 
 // Make draggable helper function
@@ -578,6 +584,51 @@ elgg.teacherannotations.stickynotes.commentSubmit = function(event) {
 			}
 		}
 	});
+	event.preventDefault();
+}
+
+// Click handler for hide notes link
+elgg.teacherannotations.stickynotes.hideClick = function(event) {
+	$_this = $(this);
+
+	var left = $(this).offset().left;
+	var top = $(this).offset().top;
+
+	// Create show link
+	var $show_link = $(document.createElement('a'));
+	$show_link.attr('href', '#');
+	$show_link.addClass('ta-sticky-notes-show');
+	$show_link.text(elgg.echo('teacherannotations:label:show'));
+
+	// Store the hide link as data within the show link
+	$show_link.data('original', $_this);
+
+	// Replace hide link
+	$(this).replaceWith($show_link);
+
+	$('.ta-sticky-note').each(function(){
+		$(this).data('original_top', $(this).css('top'));
+		$(this).data('original_left', $(this).css('left'));
+		$(this).animate({
+			top: top + 'px',
+			left: left + 'px',
+		});
+	});
+
+	event.preventDefault();
+}
+
+// Click handler for show notes link
+elgg.teacherannotations.stickynotes.showClick = function(event) {
+	$(this).replaceWith($(this).data('original'));
+
+	$('.ta-sticky-note').each(function(){
+		$(this).animate({
+			top: $(this).data('original_top'),
+			left: $(this).data('original_left'),
+		});
+	});
+
 	event.preventDefault();
 }
 
