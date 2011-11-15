@@ -40,10 +40,34 @@ $english = array(
 	'teacherannotations:error:comment' => 'There was an error adding the comment',
 	'teacherannotations:error:commentblank' => 'Missing comment text',
 	'teacherannotations:error:resolvesticky' => 'There was an error marking the sticky note as resolved',
+	'teacherannotations:error:entity' => 'Missing entity',
 	'teacherannotations:success:deletesticky' => 'Sticky note deleted!',
 	'teacherannotations:success:savestickynote' => 'Sticky note saved!',
 	'teacherannotations:success:resolvesticky' => 'Sticky note marked as resolved',
 	'teacherannotations:success:comment' => 'Comment Added!',
+
+	// Notifications
+	'teacherannotations:notification:stickynotecreate:subject' => 'Sticky Note Notification',
+	'teacherannotations:notification:stickynotecreate:body' => '%s has posted a sticky note on your Spot content titled:
+
+%s
+
+It reads:
+
+%s
+
+To view your item, click here:
+
+%s',
+
+	'teacherannotations:notification:stickynotecomment:subject' => 'Sticky Note Commented',
+	'teacherannotations:notification:stickynotecomment:body' => '%s has commented on your sticky note. It reads:
+
+%s
+
+To view your sticky note, click here:
+
+%s',
 
 	// Other content
 );

@@ -42,25 +42,22 @@ if (!$annotation) {
 	forward(REFERER);
 }
 
-//@TODO NOTIFICATIONS
-/* notify if poster wasn't owner
-if ($note->owner_guid != $user->guid) {
+// notify if poster wasn't owner
+$user = elgg_get_logged_in_user_entity();
+$entity = get_entity($note->posted_to_entity_guid);
+
+if (elgg_instanceof($entity, 'object') && $note->owner_guid != $user->guid) {
 	notify_user($note->owner_guid,
 				$user->guid,
-				elgg_echo('generic_comment:email:subject'),
-				elgg_echo('generic_comment:email:body', array(
-					$note->title,
+				elgg_echo('teacherannotations:notification:stickynotecomment:subject'),
+				elgg_echo('teacherannotations:notification:stickynotecomment:body', array(
 					$user->name,
-					$comment_text,
-					$note->getURL(),
-					$user->name,
-					$user->getURL()
+					$comment,
+					$entity->getURL(),
 				))
-			);
-}*/
+	);
+}
 
-//@TODO add to river
-//add_to_river('river/annotation/generic_comment/create', 'comment', $user->guid, $note->guid, "", 0, $annotation);
 echo json_encode(array('annotation_id' => $annotation, 'guid' => $note_guid, 'comment' => $comment));
 system_message(elgg_echo('teacherannotations:success:comment'));
 forward(REFERER);

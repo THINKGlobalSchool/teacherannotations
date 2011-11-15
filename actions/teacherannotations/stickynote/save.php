@@ -16,6 +16,15 @@ $quiet = get_input('quiet', FALSE);
 $dragging = get_input('dragging', FALSE);
 
 if (!$guid) {
+	// Require the entity!
+	$entity = get_entity($entity_guid);
+	if (!$entity_guid) {
+		if (!$quiet) {
+			register_error(elgg_echo('teacherannotations:error:entity'));
+		}
+		forward(REFERER);
+	}
+
 	$color = get_input('color', TA_COLOR_YELLOW);
 	$description = get_input('description', NULL);
 	$z = get_input('z', 0);
@@ -25,6 +34,7 @@ if (!$guid) {
 	$note = new ElggObject();
 	$note->subtype = 'ta_sticky_note';
 	$note->access_id = ACCESS_LOGGED_IN; //@TODO	
+	$note->posted_to_entity_guid = $entity->guid; // Store the entity guid as metadata as well
 } else {
 	$note = get_entity($guid);
 	if (!elgg_instanceof($note, 'object', 'ta_sticky_note')) {
@@ -53,7 +63,6 @@ if ($description === NULL) {
 	forward(REFERER);
 }
 
-
 $note->description = $description;
 $note->color = $color;
 
@@ -79,9 +88,25 @@ if (!$note->save()) {
 
 elgg_set_ignore_access($ia);
 
-// Entity relationship
-if (!$guid && $entity_guid && elgg_instanceof($entity = get_entity($entity_guid), 'object')) {
+// Do stuff if we're creating a new entity, after it is saved
+if (!$guid) {
+	// Add entity relationship
 	add_entity_relationship($note->guid, TA_STICKY_NOTE_RELATIONSHIP, $entity_guid);
+
+	// notify if poster wasn't owner
+	$user = elgg_get_logged_in_user_entity();
+	if ($entity->owner_guid != $user->guid) {
+		notify_user($entity->owner_guid,
+					$user->guid,
+					elgg_echo('teacherannotations:notification:stickynotecreate:subject'),
+					elgg_echo('teacherannotations:notification:stickynotecreate:body', array(
+						$user->name,
+						$entity->title ? $entity->title : $entity->name,
+						$description,
+						$entity->getURL(),
+					))
+				);
+	}
 }
 
 if (!$quiet) {

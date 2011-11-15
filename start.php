@@ -15,8 +15,6 @@
  * - Figure out permissions for sticky notes
  * - How big do we want these notes to get? Limit characters?
  * - What should happen when we resolve a note?
- * - Annotation notifications
- * - River?
  */
 
 elgg_register_event_handler('init', 'system', 'teacher_annotations_init');
@@ -157,10 +155,6 @@ function teacherannotations_page_handler($page) {
 function teacherannotations_entity_full_view_handler($hook, $type, $result, $params) {
 	if (!elgg_is_logged_in() || elgg_get_viewtype() != "default") {
 		return;
-	}
-
-	if ($params['view'] == 'object/todo' || $params['vars']['full_view']) {
-		error_log((int)$params['vars']['full_view'] . ' ' . $params['view']);
 	}
 
 	// Only dealing with straight up object views here

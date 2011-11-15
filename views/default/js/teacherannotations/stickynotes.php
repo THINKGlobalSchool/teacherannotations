@@ -231,7 +231,9 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 				$("#ta-sticky-submit").replaceWith($_submit);
 
 				$inputs.each(function() {
-					$(this).val('');
+					if (this.name == 'description') {
+						$(this).val('');
+					}
 				});
 
 				// Clear preview note
@@ -239,6 +241,9 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 					.removeClass(elgg.teacherannotations.stickynotes.colors.join(' '))
 					.addClass('yellow')
 					.find(".ta-sticky-note-body").html('');
+			} else {
+				// Reset input
+				$("#ta-sticky-submit").replaceWith($_submit);
 			}
 		}
 	});
