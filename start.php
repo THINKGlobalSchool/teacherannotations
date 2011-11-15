@@ -57,7 +57,6 @@ function teacher_annotations_init() {
 	elgg_register_js('elgg.teacherannotations.stickynotes', $ts_js);
 	elgg_load_js('elgg.teacherannotations.stickynotes');
 	
-
 	// Register page handler
 	elgg_register_page_handler('teacherannotations','teacherannotations_page_handler');
 
@@ -67,6 +66,12 @@ function teacher_annotations_init() {
 	elgg_register_action('teacherannotations/stickynote/delete', "$action_base/stickynote/delete.php");
 	elgg_register_action('teacherannotations/stickynote/annotate', "$action_base/stickynote/annotate.php");
 	elgg_register_action('teacherannotations/stickynote/resolve', "$action_base/stickynote/resolve.php");
+
+	// Register hook handler to add a full_view kind of context to all views
+	elgg_register_plugin_hook_handler('view', 'all', 'teacherannotations_entity_full_view_handler');
+
+	// Register general entity menu hook
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'teacherannotations_entity_menu_setup', 9999);
 
 	return TRUE;
 }
@@ -120,4 +125,43 @@ function teacherannotations_page_handler($page) {
 	} else {
 		include elgg_get_plugins_path() . 'teacherannotations/notes.php';
 	}
+}
+
+
+
+/**
+ * Post process object views and add the sticky note extension if we're in
+ * a full view.. This isn't the greatest.. but it works.
+ */
+function teacherannotations_entity_full_view_handler($hook, $type, $result, $params) {
+	if (elgg_get_viewtype() != "default") {
+		return;
+	}
+
+	if ($params['view'] == 'object/todo' || $params['vars']['full_view']) {
+		error_log((int)$params['vars']['full_view'] . ' ' . $params['view']);
+	}
+
+	// Only dealing with straight up object views here
+	if (strpos($params['view'], 'object/') === 0              // Check that view is an object view
+		&& strpos($params['view'], 'object/elements') !== 0   // Ignore object/elements views
+		&& $params['vars']['full_view']) {                    // Check for full view
+
+		// We might not want to attach sticky notes to certain entities..
+		$exceptions = array(
+			'feedback',
+			'forum',
+			'forum_topic',
+			'forum_reply',
+			'poll',
+			'messages',
+		);
+
+		if (in_array($params['vars']['entity']->getSubtype(), $exceptions)) {
+			return $return;
+		}
+
+		$result .= "<div class='ta-sticky-notes-extenstion'></div>";
+	}
+	return $result;
 }
