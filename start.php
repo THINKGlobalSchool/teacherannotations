@@ -12,10 +12,12 @@
  * http://tutorialzine.com/2010/01/sticky-notes-ajax-php-jquery/
  * 
  * TODO:
- * - Figure out permissions for sticky notes
- * - What should happen when we resolve a note?
+ * - Resolve note should hide the note, add menu to show all, hide all and show unresolved
+ * - Fix z-index for pop up form
+ * - Wider notes? Resizable? Max height/width?
  * - Add some view to advertise that the object is annotated, regardless of permissions
- * - Fix empty content.. for some reason that's borked again
+ * - Improve bottom bar
+ * - Improve edit/resolve/delete menu layout
  */
 elgg_register_event_handler('init', 'system', 'teacher_annotations_init');
 

@@ -77,7 +77,7 @@
 }
 
 
-.ta-sticky-note span.data { 
+.ta-sticky-note span.ta-sticky-note-guid {
 	display:none;
 }
 
@@ -223,6 +223,11 @@
 	right: 10px;
 	font-size: 10px;
 	color: #444;
+}
+
+.ta-sticky-note-access-edit-dropdown {
+	width: 100%;
+	margin-bottom: 2px;
 }
 
 /* Stickynote menu */

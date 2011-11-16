@@ -31,9 +31,9 @@ $english = array(
 	'teacherannotations:label:hide' => 'Hide',
 	'teacherannotations:label:show' => 'Show',
 	'teacherannotations:label:access' => 'Access',
-	'teacherannotations:label:accessprivate' => 'Private (Owner of note and owner of object)',
+	'teacherannotations:label:accessprivate' => 'Private (Note and page owner)',
 	'teacherannotations:label:accessloggedin' => 'Logged In Users',
-	'teacherannotations:label:private' => 'Teacher Annotation (Private)',
+	'teacherannotations:label:private' => 'Private Annotation',
 
 	// River
 

@@ -28,6 +28,7 @@ if (!$guid) {
 
 	$color = get_input('color', TA_COLOR_YELLOW);
 	$description = get_input('description', NULL);
+
 	$z = get_input('z', 0);
 	$x = get_input('x', 0);
 	$y = get_input('y', 0);
@@ -47,17 +48,25 @@ if (!$guid) {
 
 	$description = get_input('description', $note->description);
 
-	if (($description !== "0" && $description !== 0) && empty($description)) {
-		$description = NULL;
-	}
-
 	$color = get_input('color', $note->color);
 	$z = get_input('z', $note->z);
 	$x = get_input('x', $note->x);
 	$y = get_input('y', $note->y);
+
+	// If not dragging
+	if (!$dragging) {
+		// If access id is private, set it to the private acl
+		if ($access_id == ACCESS_TA_PRIVATE) {
+			$note->access_id = $note->ta_acl;
+		} else {
+			// Logged in users here, go ahead and set that
+			$note->access_id = $access_id;
+		}
+	}
 }
 
-if ($description === NULL) {
+// Make sure there is some content in description
+if (($description !== "0" && $description !== 0) && empty($description)) {
 	if (!$quiet) {
 		register_error(elgg_echo('teacherannotations:error:description'));
 	}

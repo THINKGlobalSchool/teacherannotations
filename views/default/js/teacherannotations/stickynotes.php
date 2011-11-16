@@ -79,7 +79,7 @@ elgg.teacherannotations.stickynotes.init = function() {
 	$('.ta-sticky-note-access-dropdown').live('change', elgg.teacherannotations.stickynotes.accessChange);
 
 	// Submit button
-	$("#ta-sticky-submit").live('click', elgg.teacherannotations.stickynotes.submit);
+	$("input#ta-sticky-submit").live('click', elgg.teacherannotations.stickynotes.submit);
 
 	// Delete click handler
 	$('.ta-sticky-note-delete').live('click', elgg.teacherannotations.stickynotes.deleteClick);
@@ -140,7 +140,7 @@ elgg.teacherannotations.stickynotes.makeDraggable = function(elements) {
 					z: elgg.teacherannotations.stickynotes.zIndex,
 					x: ui.position.left,
 					y: ui.position.top,
-					guid: parseInt(ui.helper.find('span.data').html())
+					guid: parseInt(ui.helper.find('span.ta-sticky-note-guid').html())
 				},
 				success: function(data) {
 					if (data.status != -1) {
@@ -186,7 +186,7 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 				var guid = data.output.guid
 
 				// Set guid
-				tmp.find('span.data').text(guid).end();
+				tmp.find('span.ta-sticky-note-guid').text(guid).end();
 
 				// Set time
 				tmp.find('span.elgg-subtext').text(data.output.friendly_time).end();
@@ -389,6 +389,9 @@ elgg.teacherannotations.stickynotes.editClick = function(event) {
 	// Hide the comment area
 	$note.find(".ta-sticky-note-comments-container").hide();
 
+	// Hide the access area
+	$note.find('.ta-sticky-note-access-display').hide();
+
 	// Create the textarea
 	var $textarea = $(document.createElement('textarea'));
 	$textarea.addClass('ta-sticky-note-edit-body');
@@ -397,6 +400,30 @@ elgg.teacherannotations.stickynotes.editClick = function(event) {
 
 	// Store original value as data within the textarea
 	$textarea.data('original', value);
+
+	// Create the access dropdown
+	var $select = $(document.createElement('select'));
+	$select.attr('class', 'elgg-input-dropdown ta-sticky-note-access-edit-dropdown');
+
+	// Create options
+	var $option_logged_in = $(document.createElement('option'));
+	$option_logged_in.val('1');
+	$option_logged_in.html(elgg.echo('teacherannotations:label:accessloggedin'));
+
+	var $option_private = $(document.createElement('option'));
+	$option_private.val('-42');
+	$option_private.html(elgg.echo('teacherannotations:label:accessprivate'));
+
+	// Add options to select
+	$select.append($option_logged_in);
+	$select.append($option_private);
+
+	// Set current access value
+	if ($note.find('.ta-sticky-note-access-display').html() == elgg.echo('teacherannotations:label:accessloggedin')) {
+		$select.val('1');
+	} else {
+		$select.val('-42');
+	}
 
 	// Create save button
 	var $save = $(document.createElement('input'));
@@ -409,6 +436,7 @@ elgg.teacherannotations.stickynotes.editClick = function(event) {
 
 	// Add new content to the body div
 	$body.html($textarea);
+	$body.append($select);
 	$body.append($save);
 
 	// Create color inputs
@@ -440,6 +468,9 @@ elgg.teacherannotations.stickynotes.cancelEditClick = function(event) {
 	// Show the comment area
 	$note.find(".ta-sticky-note-comments-container").show();
 
+	// Show the access area
+	$note.find(".ta-sticky-note-access-display").show();
+
 	// Replace the textarea with the original value
 	$body.html($textarea.data('original'));
 
@@ -467,16 +498,21 @@ elgg.teacherannotations.stickynotes.editSubmit = function(event) {
 	var $note = $(this).closest('.ta-sticky-note');
 	var $textarea = $note.find('textarea[name="body"]');
 	var $save = $note.find(".ta-sticky-notes-edit-submit-button");
+	var $select = $note.find('.ta-sticky-note-access-edit-dropdown');
+	var $access_display = $note.find('.ta-sticky-note-access-display');
 
-	var guid = parseInt($note.find('span.data').html());
+	var guid = parseInt($note.find('span.ta-sticky-note-guid').html());
+	var access_id = $select.val();
 	var body = $textarea.val();
 	var color = $note.data('new_color');
 
 	$save.attr('disabled', 'disabled');
 	$textarea.attr('disabled', 'disabled');
+	$select.attr('disabled', 'disabled');
 
 	elgg.action('teacherannotations/stickynote/save', {
 		data: {
+			access_id: access_id,
 			guid: guid,
 			description: body,
 			color: color,
@@ -489,12 +525,23 @@ elgg.teacherannotations.stickynotes.editSubmit = function(event) {
 				// Show the comment area
 				$note.find(".ta-sticky-note-comments-container").show();
 
+				// Set access text
+				if (access_id == 1) {
+					$access_display.html(elgg.echo('teacherannotations:label:accessloggedin'));
+				} else {
+					$access_display.html(elgg.echo('teacherannotations:label:private'));
+				}
+
+				// Show access area
+				$access_display.show();
+
 				// Replace cancel link with edit link
 				$cancel = $note.find('.ta-sticky-note-edit-cancel');
 				$cancel.replaceWith($cancel.data('original'));
 			} else {
 				$save.removeAttr('disabled');
 				$textarea.removeAttr('disabled');
+				$select.removeAttr('disabled');
 			}
 		}
 	});
@@ -562,7 +609,7 @@ elgg.teacherannotations.stickynotes.commentSubmit = function(event) {
 	var $textarea = $note.find('textarea[name="comment"]');
 	var $save = $note.find(".ta-sticky-notes-comment-submit-button");
 
-	var guid = parseInt($note.find('span.data').html());
+	var guid = parseInt($note.find('span.ta-sticky-note-guid').html());
 	var comment = $note.find('textarea[name="comment"]').val();
 
 	$save.attr('disabled', 'disabled');

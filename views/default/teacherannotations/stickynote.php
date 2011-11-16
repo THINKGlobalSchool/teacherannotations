@@ -59,7 +59,7 @@ $content = <<<HTML
 			<div class='ta-sticky-note-comment-list'>$comments</div>
 			<a href="{$note->guid}" class="ta-sticky-note-actions ta-sticky-note-comment">$comment_label</a>
 		</div>
-		<span class="data">$note->guid</span>
+		<span class="ta-sticky-note-guid">$note->guid</span>
 		<span class='ta-sticky-note-access-display'>$access_display</span>
 	</div>
 HTML;

@@ -69,7 +69,7 @@ $content = <<<HTML
 		<div class="ta-sticky-note-comments-container">
 			<div class='ta-sticky-note-comment-list'></div>
 		</div>
-		<span class="data"></span>
+		<span class="ta-sticky-note-guid"></span>
 		<span class="ta-sticky-note-access-display">$default_access</span>
 	</div>
 	
