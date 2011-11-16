@@ -11,6 +11,7 @@
  */
 
 $entity = elgg_extract('entity', $vars, NULL);    // The entity to relate this note to
+
 $entity_input = elgg_view('input/hidden', array(
 	'name' => 'entity_guid',
 	'id' => 'ta-sticky-note-entity-guid',
@@ -26,6 +27,18 @@ $description_input = elgg_view('input/plaintext', array(
 ));
 
 $color_label = elgg_echo('teacherannotations:label:color');
+
+$access_label = elgg_echo('teacherannotations:label:access');
+$access_input = elgg_view('input/dropdown', array(
+	'class' => 'ta-sticky-note-access-dropdown',
+	'name' => 'access_id',
+	'options_values' => array(
+		ACCESS_LOGGED_IN => elgg_echo('teacherannotations:label:accessloggedin'),
+		ACCESS_TA_PRIVATE => elgg_echo('teacherannotations:label:accessprivate')
+	)
+));
+
+$default_access = elgg_echo('teacherannotations:label:accessloggedin');
 
 $submit_input = elgg_view('input/submit', array(
 	'id' => 'ta-sticky-submit',
@@ -57,6 +70,7 @@ $content = <<<HTML
 			<div class='ta-sticky-note-comment-list'></div>
 		</div>
 		<span class="data"></span>
+		<span class="ta-sticky-note-access-display">$default_access</span>
 	</div>
 	
 	<!-- Note Form -->
@@ -69,8 +83,11 @@ $content = <<<HTML
 		<div class="ta-sticky-note-color green preview"></div>
 		<div class="ta-sticky-note-color orange preview"></div>
 		<div class="ta-sticky-note-color purple preview"></div>
-		<!-- Submit -->
-		<div style="clear:both;"></div>
+		<div style="clear:both;"></div><br />
+		<div>
+			<label>$access_label</label>
+			$access_input
+		</div>
 		<br />$submit_input
 		$entity_input
 	</div>

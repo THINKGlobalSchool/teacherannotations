@@ -56,18 +56,5 @@ HTML;
 
 } else {
 	// brief view
-
-	//@todo need link to actual comment!
-
-	$on = elgg_echo('on');
-
-	$excerpt = elgg_get_excerpt($comment->value, 80);
-
-	$body = <<<HTML
-<span class="elgg-subtext">
-	$commenter_link $on $entity_link ($friendlytime): $excerpt
-</span>
-HTML;
-
-	echo elgg_view_image_block($commenter_icon, $body);
+	// ..nothing
 }

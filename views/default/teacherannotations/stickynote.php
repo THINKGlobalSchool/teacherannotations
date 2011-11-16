@@ -33,6 +33,13 @@ HTML;
 $comment_label = elgg_echo('teacherannotations:label:comment');
 $comments = elgg_view('teacherannotations/stickynotecomments', array('note_guid' => $note->guid));
 
+if ($note->access_id == ACCESS_LOGGED_IN) {
+	$access_display = elgg_echo('teacherannotations:label:accessloggedin');
+} else {
+	$acl = get_access_collection($note->access_id);
+	$access_display = $acl->name;
+}
+
 $content = <<<HTML
 	<div tabindex="{$note->z}" class="hidden ta-actionable ta-sticky-note ta-draggable {$note->color}" style="left:{$note->x}px;top:{$note->y}px;z-index:{$note->z};">
 		<div class="ta-sticky-note-author">
@@ -53,6 +60,7 @@ $content = <<<HTML
 			<a href="{$note->guid}" class="ta-sticky-note-actions ta-sticky-note-comment">$comment_label</a>
 		</div>
 		<span class="data">$note->guid</span>
+		<span class='ta-sticky-note-access-display'>$access_display</span>
 	</div>
 HTML;
 

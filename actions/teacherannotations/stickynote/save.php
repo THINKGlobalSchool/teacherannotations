@@ -14,6 +14,7 @@ $guid = get_input('guid', NULL);
 $entity_guid = get_input('entity_guid', NULL); // The entity to relate this note to
 $quiet = get_input('quiet', FALSE);
 $dragging = get_input('dragging', FALSE);
+$access_id = get_input('access_id', ACCESS_LOGGED_IN);
 
 if (!$guid) {
 	// Require the entity!
@@ -33,8 +34,8 @@ if (!$guid) {
 
 	$note = new ElggObject();
 	$note->subtype = 'ta_sticky_note';
-	$note->access_id = ACCESS_LOGGED_IN; //@TODO	
 	$note->posted_to_entity_guid = $entity->guid; // Store the entity guid as metadata as well
+	$note->access_id = $access_id;
 } else {
 	$note = get_entity($guid);
 	if (!elgg_instanceof($note, 'object', 'ta_sticky_note')) {
@@ -72,12 +73,13 @@ $ia = elgg_get_ignore_access();
 
 if ($dragging) {
 	elgg_set_ignore_access(TRUE);
+} else {
+	// ..
 }
 
 $note->z = $z;
 $note->x = $x;
 $note->y = $y;
-
 
 if (!$note->save()) {
 	if (!$quiet) {

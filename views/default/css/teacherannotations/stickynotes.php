@@ -86,7 +86,7 @@
 }
 
 #ta-sticky-note-add-form {
-	height: 200px;
+	height: 240px;
 	margin: 10px 0 0 200px;
 	width: 350px;
 }
@@ -139,6 +139,7 @@
 	background: #FFFFFF;
 	padding: 3px 0 3px 3px;
 	margin-top: 1px;
+	margin-bottom: 10px;
 	border: 1px solid #AAA;
 }
 
@@ -150,6 +151,10 @@
 	height: 22px;
 	font-size: 11px;
 	padding: 0 4px;
+}
+
+.ta-sticky-notes-comment-submit-button {
+	margin-bottom: 10px;
 }
 
 .ta-sticky-note-comments-container {
@@ -183,6 +188,7 @@
 
 .ta-sticky-note-comment, .ta-sticky-note-comment-cancel {
 	float: right;
+	margin-bottom: 5px;
 }
 
 #ta-add-sticky-note-form {
@@ -209,6 +215,14 @@
 
 #ta-add-sticky-note-form input[type=text] {
 	height: auto;
+}
+
+.ta-sticky-note-access-display {
+	position: absolute;
+	bottom: 0px;
+	right: 10px;
+	font-size: 10px;
+	color: #444;
 }
 
 /* Stickynote menu */

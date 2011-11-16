@@ -75,6 +75,9 @@ elgg.teacherannotations.stickynotes.init = function() {
 	// Changing the color of the preview note:
 	$('.ta-sticky-note-color.preview').live('click', elgg.teacherannotations.stickynotes.previewColorClick);
 
+	// Handle change event for the access dropdown
+	$('.ta-sticky-note-access-dropdown').live('change', elgg.teacherannotations.stickynotes.accessChange);
+
 	// Submit button
 	$("#ta-sticky-submit").live('click', elgg.teacherannotations.stickynotes.submit);
 
@@ -170,6 +173,7 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 		data: {
 			description: values['description'],
 			entity_guid: values['entity_guid'],
+			access_id: values['access_id'],
 			color: $.trim($('#ta-sticky-note-preview').attr('class').replace('ta-sticky-note','')),
 			z: ++elgg.teacherannotations.stickynotes.zIndex,
 			x: 45,
@@ -274,6 +278,16 @@ elgg.teacherannotations.stickynotes.previewColorClick = function(event){
 	$('#ta-sticky-note-preview')
 		.removeClass(elgg.teacherannotations.stickynotes.colors.join(' '))
 		.addClass($.trim($(this).attr('class').replace('ta-sticky-note-color','')));
+}
+
+// Change handler for the access dropdown
+elgg.teacherannotations.stickynotes.accessChange = function(event){
+	$access_display = $('#ta-sticky-note-preview').find('.ta-sticky-note-access-display');
+	if ($(this).val() == 1) {
+		$access_display.html(elgg.echo('teacherannotations:label:accessloggedin'));
+	} else {
+		$access_display.html(elgg.echo('teacherannotations:label:private'));
+	}
 }
 
 // Mousedown helper (NOT IN USE)
@@ -607,12 +621,12 @@ elgg.teacherannotations.stickynotes.hideClick = function(event) {
 	$(this).replaceWith($show_link);
 
 	$('.ta-sticky-note').each(function(){
-		$(this).data('original_top', $(this).css('top'));
-		$(this).data('original_left', $(this).css('left'));
+		//$(this).data('original_top', $(this).css('top'));
+		//$(this).data('original_left', $(this).css('left'));
 		$(this).animate({
-			top: top + 'px',
-			left: left + 'px',
-		});
+			//top: top + 'px',
+			//left: left + 'px',
+		}).fadeOut();
 	});
 
 	event.preventDefault();
@@ -623,9 +637,9 @@ elgg.teacherannotations.stickynotes.showClick = function(event) {
 	$(this).replaceWith($(this).data('original'));
 
 	$('.ta-sticky-note').each(function(){
-		$(this).animate({
-			top: $(this).data('original_top'),
-			left: $(this).data('original_left'),
+		$(this).fadeIn().animate({
+			//top: $(this).data('original_top'),
+			//left: $(this).data('original_left'),
 		});
 	});
 
