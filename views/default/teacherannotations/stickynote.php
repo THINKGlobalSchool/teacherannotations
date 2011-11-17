@@ -41,7 +41,7 @@ if ($note->access_id == ACCESS_LOGGED_IN) {
 }
 
 $content = <<<HTML
-	<div tabindex="{$note->z}" class="hidden ta-actionable ta-sticky-note ta-draggable {$note->color}" style="left:{$note->x}px;top:{$note->y}px;z-index:{$note->z};">
+	<div tabindex="{$note->z}" class="hidden ta-actionable ta-sticky-note ta-draggable {$note->color}" style="left:{$note->x}px;top:{$note->y}px;width:{$note->width}px;z-index:{$note->z};">
 		<div class="ta-sticky-note-author">
 			$owner_icon
 			<div class="ta-sticky-note-author-info">

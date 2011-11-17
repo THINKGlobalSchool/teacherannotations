@@ -64,7 +64,7 @@ elgg.teacherannotations.stickynotes.init = function() {
 	$(window).resize(elgg.teacherannotations.stickynotes.onResize);
 
 	// Make sticky notes draggable
-	elgg.teacherannotations.stickynotes.makeDraggable($('.ta-sticky-note.ta-draggable'));
+	elgg.teacherannotations.stickynotes.initNotes($('.ta-sticky-note.ta-draggable'));
 
 	// Do something on mousedown???
 	//$('.ta-sticky-note.ta-actionable').live('mousedown', elgg.teacherannotations.stickynotes.onMousedown);
@@ -116,7 +116,7 @@ elgg.teacherannotations.stickynotes.init = function() {
 }
 
 // Make draggable helper function
-elgg.teacherannotations.stickynotes.makeDraggable = function(elements) {
+elgg.teacherannotations.stickynotes.initNotes = function($elements) {
 	// Grab the boundary box
 	var $boundary = $("#ta-sticky-notes-boundary");
 
@@ -126,8 +126,40 @@ elgg.teacherannotations.stickynotes.makeDraggable = function(elements) {
 	var x2 = $boundary.offset().left + $boundary.width() - 186;
 	var y2 = $boundary.offset().top + $boundary.height() - 186;
 
-	// Elements is a jquery object: 
-	elements.appendTo('#ta-sticky-notes-container').fadeIn('slow').draggable({
+	// Add notes to the sticky note container
+	$elements.appendTo('#ta-sticky-notes-container').fadeIn('slow').removeClass('hidden');
+
+	// Make resizable
+	$elements.resizable({
+		handles: "e",
+		maxWidth: 300,
+		minWidth: 165,
+		resize: function(e,ui) {
+			// Need the height to always be set to auto so that
+			// the note adjusts appropriately
+			ui.element.css('height', 'auto');
+		},
+		stop: function(e,ui) {
+			elgg.action('teacherannotations/stickynote/save', {
+				data: {
+					morphing: true,
+					quiet: true,
+					width: ui.size.width,
+					guid: parseInt(ui.helper.find('span.ta-sticky-note-guid').html())
+				},
+				success: function(data) {
+					if (data.status != -1) {
+						// ..
+					} else {
+						console.log(data);
+					}
+				}
+			});
+		},
+	});
+
+	// Make draggable
+	$elements.draggable({
 		containment: [x1,y1,x2,y2], // Dynamic coords
 		start: function(e,ui) { 
 			ui.helper.css('z-index',++elgg.teacherannotations.stickynotes.zIndex);
@@ -135,7 +167,7 @@ elgg.teacherannotations.stickynotes.makeDraggable = function(elements) {
 		stop: function(e,ui) {			
 			elgg.action('teacherannotations/stickynote/save', {
 				data: {
-					dragging: true,
+					morphing: true,
 					quiet: true,
 					z: elgg.teacherannotations.stickynotes.zIndex,
 					x: ui.position.left,
@@ -232,7 +264,7 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 				tmp.addClass('hidden').appendTo($("#ta-sticky-notes-container")).fadeIn();
 
 				// Make it draggable
-				elgg.teacherannotations.stickynotes.makeDraggable(tmp);
+				elgg.teacherannotations.stickynotes.initNotes(tmp);
 
 				// Close form
 				$.fancybox.close();

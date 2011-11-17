@@ -13,7 +13,7 @@
 $guid = get_input('guid', NULL);
 $entity_guid = get_input('entity_guid', NULL); // The entity to relate this note to
 $quiet = get_input('quiet', FALSE);
-$dragging = get_input('dragging', FALSE);
+$morphing = get_input('morphing', FALSE); // Means we're JUST moving/resizing the note
 $access_id = get_input('access_id', ACCESS_LOGGED_IN);
 
 if (!$guid) {
@@ -32,6 +32,7 @@ if (!$guid) {
 	$z = get_input('z', 0);
 	$x = get_input('x', 0);
 	$y = get_input('y', 0);
+	$width = get_input('width', 165);
 
 	$note = new ElggObject();
 	$note->subtype = 'ta_sticky_note';
@@ -52,9 +53,10 @@ if (!$guid) {
 	$z = get_input('z', $note->z);
 	$x = get_input('x', $note->x);
 	$y = get_input('y', $note->y);
+	$width = get_input('width', $note->width);
 
-	// If not dragging
-	if (!$dragging) {
+	// If not morphing
+	if (!$morphing) {
 		// If access id is private, set it to the private acl
 		if ($access_id == ACCESS_TA_PRIVATE) {
 			$note->access_id = $note->ta_acl;
@@ -80,7 +82,7 @@ $note->color = $color;
 // @TODO - If I stick with ignoring access for moving, I need to find a more secure way
 $ia = elgg_get_ignore_access();
 
-if ($dragging) {
+if ($morphing) {
 	elgg_set_ignore_access(TRUE);
 } else {
 	// ..
@@ -89,6 +91,7 @@ if ($dragging) {
 $note->z = $z;
 $note->x = $x;
 $note->y = $y;
+$note->width = $width;
 
 if (!$note->save()) {
 	if (!$quiet) {

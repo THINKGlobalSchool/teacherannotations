@@ -234,3 +234,22 @@
 li.elgg-menu-item-ta-sticky-note-add:after, li.elgg-menu-item-ta-sticky-notes-hide:after {
 	content: "\00a0|\00a0"; // Add a pipe between menu items
 }
+
+
+/* Resizeable stuff */
+.ta-sticky-note .ui-icon {
+	width: 16px;
+	height: 16px;
+	background-image: url(<?php echo elgg_get_site_url(); ?>mod/teacherannotations/graphics/ui-icons-ta.png);
+}
+.ta-sticky-note .ui-icon-gripsmall-diagonal-se { background-position: -64px -224px; }
+.ta-sticky-note .ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: inherit !important; display: block;}
+.ta-sticky-note .ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
+.ta-sticky-note .ui-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0px; }
+.ta-sticky-note .ui-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0px; }
+.ta-sticky-note .ui-resizable-e { cursor: e-resize; width: 12px; right: -5px; top: 0px; height: 100%; }
+.ta-sticky-note .ui-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0px; height: 100%; }
+.ta-sticky-note .ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
+.ta-sticky-note .ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
+.ta-sticky-note .ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
+.ta-sticky-note .ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}/* Accordion

@@ -13,8 +13,6 @@
  * 
  * TODO:
  * - Resolve note should hide the note, add menu to show all, hide all and show unresolved
- * - Fix z-index for pop up form
- * - Wider notes? Resizable? Max height/width?
  * - Add some view to advertise that the object is annotated, regardless of permissions
  * - Improve bottom bar
  * - Improve edit/resolve/delete menu layout
