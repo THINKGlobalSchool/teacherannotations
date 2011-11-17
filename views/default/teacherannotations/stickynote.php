@@ -17,15 +17,28 @@ $owner_icon = elgg_view_entity_icon($owner, 'tiny');
 $owner_link = "<a href='{$owner->getURL()}'>{$owner->name}</a>";
 $date = elgg_view_friendly_time($note->time_updated);
 
+// Set class if note is resolved
+if ($note->resolved) {
+	$resolved_class = "ta-sticky-note-resolved";
+}
+
+// Add edit actions
 if ($note->canEdit()) {
 	$edit_label = elgg_echo('teacherannotations:label:edit');
 	$delete_label = elgg_echo('teacherannotations:label:delete');
-	$resolve_label = elgg_echo('teacherannotations:label:resolve');
 	$edit = <<<HTML
 		<a href="{$note->guid}" class="ta-sticky-note-edit">$edit_label</a> |
-		<a href="{$note->guid}" class="ta-sticky-note-resolve">$resolve_label</a> |
-		<a href="{$note->guid}" class="ta-sticky-note-delete">$delete_label</a>
+		<a href="{$note->guid}" class="ta-sticky-note-delete">$delete_label</a> |
 HTML;
+
+	// Add resolve/unresolve link
+	if ($note->resolved) {
+		$unresolve_label = elgg_echo('teacherannotations:label:unresolve');
+		$edit .= " <a href='{$note->guid}' class='ta-sticky-note-unresolve'>$unresolve_label</a>";
+	} else {
+		$resolve_label = elgg_echo('teacherannotations:label:resolve');
+		$edit .= " <a href='{$note->guid}' class='ta-sticky-note-resolve'>$resolve_label</a>";
+	}
 } else {
 	$edit = "&nbsp;";
 }
@@ -41,11 +54,10 @@ if ($note->access_id == ACCESS_LOGGED_IN) {
 }
 
 $content = <<<HTML
-	<div tabindex="{$note->z}" class="hidden ta-actionable ta-sticky-note ta-draggable {$note->color}" style="left:{$note->x}px;top:{$note->y}px;width:{$note->width}px;z-index:{$note->z};">
+	<div tabindex="{$note->z}" class="ta-actionable ta-sticky-note ta-draggable {$note->color} {$resolved_class}" style="display: none;left:{$note->x}px;top:{$note->y}px;width:{$note->width}px;z-index:{$note->z};">
 		<div class="ta-sticky-note-author">
 			$owner_icon
 			<div class="ta-sticky-note-author-info">
-				<!-- not sure about the owner name here... names *could* be long {$owner->name}<br /> -->
 				<span>{$owner_link}</span>
 				<span class="elgg-subtext">$date</span>
 				<span class="ta-sticky-note-actions ta-sticky-note-edit-container">

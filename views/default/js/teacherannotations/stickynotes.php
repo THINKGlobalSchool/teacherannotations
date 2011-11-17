@@ -87,6 +87,9 @@ elgg.teacherannotations.stickynotes.init = function() {
 	// Resolve click handler
 	$('.ta-sticky-note-resolve').live('click', elgg.teacherannotations.stickynotes.resolveClick);
 
+	// Unresolve click handler
+	$('.ta-sticky-note-unresolve').live('click', elgg.teacherannotations.stickynotes.unresolveClick);
+
 	// Edit click handler
 	$('.ta-sticky-note-edit').live('click', elgg.teacherannotations.stickynotes.editClick);
 
@@ -108,11 +111,14 @@ elgg.teacherannotations.stickynotes.init = function() {
 	// Comment submit handler
 	$('.ta-sticky-notes-comment-submit-button').live('click', elgg.teacherannotations.stickynotes.commentSubmit);
 
-	// Hide notes click handler
-	$('.ta-sticky-notes-hide').live('click', elgg.teacherannotations.stickynotes.hideClick);
+	// Hide all notes click handler
+	$('.ta-sticky-notes-hide-all').live('click', elgg.teacherannotations.stickynotes.hideAllClick);
 
-	// Show notes click handler
-	$('.ta-sticky-notes-show').live('click', elgg.teacherannotations.stickynotes.showClick);
+	// Show all notes click handler
+	$('.ta-sticky-notes-show-all').live('click', elgg.teacherannotations.stickynotes.showAllClick);
+
+	// Show unresolved notes click handler
+	$('.ta-sticky-notes-show-unresolved').live('click', elgg.teacherannotations.stickynotes.showUnresolvedClick);
 }
 
 // Make draggable helper function
@@ -127,7 +133,13 @@ elgg.teacherannotations.stickynotes.initNotes = function($elements) {
 	var y2 = $boundary.offset().top + $boundary.height() - 186;
 
 	// Add notes to the sticky note container
-	$elements.appendTo('#ta-sticky-notes-container').fadeIn('slow').removeClass('hidden');
+	$elements.each(function() {
+		$(this).appendTo('#ta-sticky-notes-container');
+		// Only show notes that aren't resolved (default)
+		if (!$(this).hasClass('ta-sticky-note-resolved')) {
+			$(this).fadeIn('slow');
+		}
+	});
 
 	// Make resizable
 	$elements.resizable({
@@ -223,7 +235,7 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 				// Set time
 				tmp.find('span.elgg-subtext').text(data.output.friendly_time).end();
 
-				var actions = ['edit', 'resolve', 'delete'];
+				var actions = ['edit','delete','resolve'];
 				var links = [];
 
 				$edit_container = tmp.find('span.ta-sticky-note-edit-container');
@@ -381,17 +393,70 @@ elgg.teacherannotations.stickynotes.deleteClick = function(event) {
 
 // Resolve sticky note
 elgg.teacherannotations.stickynotes.resolveClick = function(event) {
-	var guid = $(this).attr('href');
+	var $note = $(this).closest('.ta-sticky-note');
 	var $_this = $(this);
+	var guid = $(this).attr('href');
 
-	// Delete action
+	// Disable the link
+	$(this).bind('click', elgg.teacherannotations.stickynotes.disableLink);
+
+	// Resolve action
 	elgg.action('teacherannotations/stickynote/resolve', {
 		data: {
-			guid: guid
+			guid: guid,
+			resolve: 1,
 		},
 		success: function(data) {
 			if (data.status != -1) {
-				// ..
+				// Create unresolve link
+				var $unresolve_link = $(document.createElement('a'));
+				$unresolve_link.attr('href', guid);
+				$unresolve_link.addClass('ta-sticky-note-unresolve');
+				$unresolve_link.text(elgg.echo('teacherannotations:label:unresolve'));
+
+				$note.fadeOut('slow', function() {
+					$(this).addClass('ta-sticky-note-resolved');
+
+					// Replace resolve link with unresolve
+					$_this.replaceWith($unresolve_link);
+				});
+			} else {
+				$_this.unbind('click', elgg.teacherannotations.stickynotes.disableLink);
+			}
+		}
+	});
+	event.preventDefault();
+}
+
+// Unresolve sticky note
+elgg.teacherannotations.stickynotes.unresolveClick = function(event) {
+	var $note = $(this).closest('.ta-sticky-note');
+	var $_this = $(this);
+	var guid = $(this).attr('href');
+
+	// Disable the link
+	$(this).bind('click', elgg.teacherannotations.stickynotes.disableLink);
+
+	// Unresolve action
+	elgg.action('teacherannotations/stickynote/resolve', {
+		data: {
+			guid: guid,
+			resolve: 0,
+		},
+		success: function(data) {
+			if (data.status != -1) {
+				$note.removeClass('ta-sticky-note-resolved');
+
+				// Create unresolve link
+				var $resolve_link = $(document.createElement('a'));
+				$resolve_link.attr('href', guid);
+				$resolve_link.addClass('ta-sticky-note-resolve');
+				$resolve_link.text(elgg.echo('teacherannotations:label:resolve'));
+
+				// Replace unresolve link with resolve
+				$_this.replaceWith($resolve_link);
+			} else {
+				$_this.unbind('click', elgg.teacherannotations.stickynotes.disableLink);
 			}
 		}
 	});
@@ -681,48 +746,37 @@ elgg.teacherannotations.stickynotes.commentSubmit = function(event) {
 }
 
 // Click handler for hide notes link
-elgg.teacherannotations.stickynotes.hideClick = function(event) {
-	$_this = $(this);
-
-	var left = $(this).offset().left;
-	var top = $(this).offset().top;
-
-	// Create show link
-	var $show_link = $(document.createElement('a'));
-	$show_link.attr('href', '#');
-	$show_link.addClass('ta-sticky-notes-show');
-	$show_link.text(elgg.echo('teacherannotations:label:show'));
-
-	// Store the hide link as data within the show link
-	$show_link.data('original', $_this);
-
-	// Replace hide link
-	$(this).replaceWith($show_link);
-
+elgg.teacherannotations.stickynotes.hideAllClick = function(event) {
 	$('.ta-sticky-note').each(function(){
-		//$(this).data('original_top', $(this).css('top'));
-		//$(this).data('original_left', $(this).css('left'));
-		$(this).animate({
-			//top: top + 'px',
-			//left: left + 'px',
-		}).fadeOut();
+		$(this).fadeOut();
 	});
-
 	event.preventDefault();
 }
 
-// Click handler for show notes link
-elgg.teacherannotations.stickynotes.showClick = function(event) {
-	$(this).replaceWith($(this).data('original'));
-
+// Click handler for show all notes link
+elgg.teacherannotations.stickynotes.showAllClick = function(event) {
 	$('.ta-sticky-note').each(function(){
-		$(this).fadeIn().animate({
-			//top: $(this).data('original_top'),
-			//left: $(this).data('original_left'),
-		});
+		$(this).fadeIn();
 	});
-
 	event.preventDefault();
+}
+
+// Click handler for show unresolved notes link
+elgg.teacherannotations.stickynotes.showUnresolvedClick = function(event) {
+	$('.ta-sticky-note').each(function(){
+		if (!$(this).hasClass('ta-sticky-note-resolved')) {
+			$(this).fadeIn();
+		} else {
+			$(this).fadeOut();
+		}
+	});
+	event.preventDefault();
+}
+
+// Disable link helper
+elgg.teacherannotations.stickynotes.disableLink = function(event) {
+	event.preventDefault()
+	return false;
 }
 
 elgg.register_hook_handler('init', 'system', elgg.teacherannotations.stickynotes.init);

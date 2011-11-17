@@ -12,8 +12,8 @@
  * http://tutorialzine.com/2010/01/sticky-notes-ajax-php-jquery/
  * 
  * TODO:
- * - Resolve note should hide the note, add menu to show all, hide all and show unresolved
  * - Add some view to advertise that the object is annotated, regardless of permissions
+ *    - Maybe show total/private #?
  * - Improve bottom bar
  * - Improve edit/resolve/delete menu layout
  */
@@ -234,7 +234,7 @@ function teacherannotations_sticky_notes_menu_setup($hook, $type, $return, $para
 
 	$options = array(
 		'name' => 'ta-sticky-note-add',
-		'text' => elgg_echo('teacherannotations:label:add') . $add_sticky_form,
+		'text' => elgg_echo('teacherannotations:label:add'),
 		'href' => '#ta-add-sticky-note-form',
 		'link_class' => 'elgg-lightbox',
 		'priority' => 2,
@@ -243,11 +243,31 @@ function teacherannotations_sticky_notes_menu_setup($hook, $type, $return, $para
 	$return[] = ElggMenuItem::factory($options);
 
 	$options = array(
-		'name' => 'ta-sticky-notes-hide',
-		'text' =>  elgg_echo('teacherannotations:label:hide') . $add_sticky_form,
+		'name' => 'ta-sticky-notes-show-unresolved',
+		'text' =>  elgg_echo('teacherannotations:label:showunresolved'),
 		'href' => '#',
-		'link_class' => 'ta-sticky-notes-hide',
+		'link_class' => 'ta-sticky-notes-show-unresolved',
+		'priority' => 3,
+	);
+
+	$return[] = ElggMenuItem::factory($options);
+
+	$options = array(
+		'name' => 'ta-sticky-notes-show-all',
+		'text' =>  elgg_echo('teacherannotations:label:showall'),
+		'href' => '#',
+		'link_class' => 'ta-sticky-notes-show-all',
 		'priority' => 4,
+	);
+
+	$return[] = ElggMenuItem::factory($options);
+
+	$options = array(
+		'name' => 'ta-sticky-notes-hide-all',
+		'text' =>  elgg_echo('teacherannotations:label:hideall'),
+		'href' => '#',
+		'link_class' => 'ta-sticky-notes-hide-all',
+		'priority' => 5,
 	);
 
 	$return[] = ElggMenuItem::factory($options);

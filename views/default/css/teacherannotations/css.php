@@ -32,6 +32,7 @@ div#ta-bottom-bar {
 	-moz-border-radius: 10px 10px 0 0;
 	border-radius: 10px 10px 0 0;
 	padding: 5px;
+	z-index: 5000;
 }
 
 #ta-bottom-bar ul li a:hover {

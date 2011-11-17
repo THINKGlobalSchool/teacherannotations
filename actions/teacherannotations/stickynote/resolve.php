@@ -11,6 +11,7 @@
  */
 
 $note_guid = get_input('guid');
+$resolve = get_input('resolve', TRUE);
 
 // Grab note
 $note = get_entity($note_guid);
@@ -20,7 +21,7 @@ if (!elgg_instanceof($note, 'object', 'ta_sticky_note')) {
 }
 
 // Set resolved
-$note->resolved = TRUE;
+$note->resolved = $resolve;
 
 // Try saving
 if (!$note->save()) {
@@ -31,5 +32,9 @@ if (!$note->save()) {
 }
 
 echo $note->resolved;
-system_message(elgg_echo('teacherannotations:success:resolvesticky'));
+if ($note->resolved) {
+	system_message(elgg_echo('teacherannotations:success:resolvesticky'));
+} else {
+	system_message(elgg_echo('teacherannotations:success:unresolvesticky'));
+}
 forward(REFERER);

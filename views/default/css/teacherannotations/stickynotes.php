@@ -230,8 +230,16 @@
 	margin-bottom: 2px;
 }
 
+/* Resolved */
+.ta-sticky-note-resolved {
+	display: none;
+}
+
 /* Stickynote menu */
-li.elgg-menu-item-ta-sticky-note-add:after, li.elgg-menu-item-ta-sticky-notes-hide:after {
+li.elgg-menu-item-ta-sticky-note-add:after,
+li.elgg-menu-item-ta-sticky-notes-hide-all:after,
+li.elgg-menu-item-ta-sticky-notes-show-all:after,
+li.elgg-menu-item-ta-sticky-notes-show-unresolved:after {
 	content: "\00a0|\00a0"; // Add a pipe between menu items
 }
 
