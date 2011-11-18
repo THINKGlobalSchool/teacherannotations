@@ -747,6 +747,8 @@ elgg.teacherannotations.stickynotes.commentSubmit = function(event) {
 
 // Click handler for hide notes link
 elgg.teacherannotations.stickynotes.hideAllClick = function(event) {
+	$('.ta-sticky-notes-show-option').removeClass('ta-sticky-notes-menu-selected');
+	$(this).addClass('ta-sticky-notes-menu-selected');
 	$('.ta-sticky-note').each(function(){
 		$(this).fadeOut();
 	});
@@ -755,6 +757,8 @@ elgg.teacherannotations.stickynotes.hideAllClick = function(event) {
 
 // Click handler for show all notes link
 elgg.teacherannotations.stickynotes.showAllClick = function(event) {
+	$('.ta-sticky-notes-show-option').removeClass('ta-sticky-notes-menu-selected');
+	$(this).addClass('ta-sticky-notes-menu-selected');
 	$('.ta-sticky-note').each(function(){
 		$(this).fadeIn();
 	});
@@ -763,6 +767,8 @@ elgg.teacherannotations.stickynotes.showAllClick = function(event) {
 
 // Click handler for show unresolved notes link
 elgg.teacherannotations.stickynotes.showUnresolvedClick = function(event) {
+	$('.ta-sticky-notes-show-option').removeClass('ta-sticky-notes-menu-selected');
+	$(this).addClass('ta-sticky-notes-menu-selected');
 	$('.ta-sticky-note').each(function(){
 		if (!$(this).hasClass('ta-sticky-note-resolved')) {
 			$(this).fadeIn();

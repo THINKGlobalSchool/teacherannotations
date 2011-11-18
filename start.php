@@ -225,7 +225,7 @@ function teacherannotations_entity_full_view_handler($hook, $type, $return, $par
 function teacherannotations_sticky_notes_menu_setup($hook, $type, $return, $params) {
  	$options = array(
 		'name' => 'ta-sticky-notes',
-		'text' => elgg_echo('teacherannotations:label:stickynotes') . ':&nbsp;',
+		'text' => elgg_echo('teacherannotations:label:stickynotes') . ':',
 		'href' => FALSE,
 		'priority' => 1,
 	);
@@ -237,37 +237,50 @@ function teacherannotations_sticky_notes_menu_setup($hook, $type, $return, $para
 		'text' => elgg_echo('teacherannotations:label:add'),
 		'href' => '#ta-add-sticky-note-form',
 		'link_class' => 'elgg-lightbox',
+		'item_class' => 'ta-sticky-notes-menu-item ta-sticky-notes-menu-item-border',
 		'priority' => 2,
 	);
 
 	$return[] = ElggMenuItem::factory($options);
 
-	$options = array(
-		'name' => 'ta-sticky-notes-show-unresolved',
-		'text' =>  elgg_echo('teacherannotations:label:showunresolved'),
-		'href' => '#',
-		'link_class' => 'ta-sticky-notes-show-unresolved',
+ 	$options = array(
+		'name' => 'ta-sticky-notes-show',
+		'text' => elgg_echo('teacherannotations:label:show') . ':',
+		'href' => FALSE,
 		'priority' => 3,
 	);
 
 	$return[] = ElggMenuItem::factory($options);
 
 	$options = array(
-		'name' => 'ta-sticky-notes-show-all',
-		'text' =>  elgg_echo('teacherannotations:label:showall'),
+		'name' => 'ta-sticky-notes-show-unresolved',
+		'text' =>  elgg_echo('teacherannotations:label:unresolved'),
 		'href' => '#',
-		'link_class' => 'ta-sticky-notes-show-all',
+		'link_class' => 'ta-sticky-notes-show-unresolved ta-sticky-notes-show-option ta-sticky-notes-menu-selected',
+		'item_class' => 'ta-sticky-notes-menu-item',
 		'priority' => 4,
 	);
 
 	$return[] = ElggMenuItem::factory($options);
 
 	$options = array(
-		'name' => 'ta-sticky-notes-hide-all',
-		'text' =>  elgg_echo('teacherannotations:label:hideall'),
+		'name' => 'ta-sticky-notes-show-all',
+		'text' =>  elgg_echo('teacherannotations:label:all'),
 		'href' => '#',
-		'link_class' => 'ta-sticky-notes-hide-all',
+		'link_class' => 'ta-sticky-notes-show-all ta-sticky-notes-show-option',
+		'item_class' => 'ta-sticky-notes-menu-item',
 		'priority' => 5,
+	);
+
+	$return[] = ElggMenuItem::factory($options);
+
+	$options = array(
+		'name' => 'ta-sticky-notes-hide-all',
+		'text' =>  elgg_echo('teacherannotations:label:hide'),
+		'href' => '#',
+		'link_class' => 'ta-sticky-notes-hide-all ta-sticky-notes-show-option',
+		'item_class' => 'ta-sticky-notes-menu-item',
+		'priority' => 6,
 	);
 
 	$return[] = ElggMenuItem::factory($options);

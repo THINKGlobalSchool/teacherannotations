@@ -236,13 +236,35 @@
 }
 
 /* Stickynote menu */
-li.elgg-menu-item-ta-sticky-note-add:after,
-li.elgg-menu-item-ta-sticky-notes-hide-all:after,
-li.elgg-menu-item-ta-sticky-notes-show-all:after,
-li.elgg-menu-item-ta-sticky-notes-show-unresolved:after {
-	content: "\00a0|\00a0"; // Add a pipe between menu items
+.elgg-menu-item-ta-sticky-notes, .elgg-menu-item-ta-sticky-notes-show {
+	font-weight: normal;
+	margin-right: 8px;
+	text-transform: uppercase;
 }
 
+.ta-sticky-notes-menu-item {
+	margin-right: 6px;
+	margin-bottom: 2px;
+	padding-right: 3px;
+}
+
+.ta-sticky-notes-menu-item-border {
+	border-right: 1px solid #DB1730;
+}
+
+.ta-sticky-notes-menu-item a {
+	margin-right: 5px;
+	color: #ffffff;
+}
+
+.ta-sticky-notes-menu-item:after {
+	/*content: "\00a0|\00a0";*/ // Add a pipe between menu items
+}
+
+.ta-sticky-notes-menu-item a.ta-sticky-notes-menu-selected, .ta-sticky-notes-menu-item a.ta-sticky-notes-menu-selected:hover {
+	text-decoration: underline !important;
+	text-shadow: 0 0 4px #000000;
+}
 
 /* Resizeable stuff */
 .ta-sticky-note .ui-icon {

@@ -18,23 +18,33 @@
 }
 
 div#ta-bottom-bar {
-	overflow: hidden;
-	width: 50%;
-	height: 0px;
-	position: absolute;
-	bottom: 0;
-	left: 25%;
-	color: #000;
-	font-weight: bold;
-	background-color: #BBBBBB;
-	box-shadow: 0px 0px 3px #333;
-	-webkit-border-radius: 10px 10px 0 0;
-	-moz-border-radius: 10px 10px 0 0;
-	border-radius: 10px 10px 0 0;
-	padding: 5px;
-	z-index: 5000;
+	background: url(<?php echo elgg_get_site_url(); ?>mod/tgstheme/_graphics/back-top.jpg) repeat-x top left #85161D;
+	border-color: #000000;
+    border-radius: 6px 6px 0 0;
+    border-style: solid;
+    border-width: 2px 2px 0;
+    bottom: 0;
+    box-shadow: 0 0 3px #333333;
+    color: #000000;
+    font-weight: bold;
+    height: 0;
+    left: 50%;
+	margin-left: -179px; /* Half the width for horizontal centering */
+    overflow: hidden;
+    padding: 0 10px 4px;
+    position: absolute;
+    width: 358px;
+    z-index: 5000;
+}
+
+#ta-bottom-bar ul {
+	color: #ffffff;
+}
+
+#ta-bottom-bar ul li {
 }
 
 #ta-bottom-bar ul li a:hover {
-	color: #000033;
+	color: #CCC;
+	text-decoration: none;
 }
