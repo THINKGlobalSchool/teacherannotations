@@ -10,10 +10,7 @@
  * 
  * Utilizes code from the following tutorial:
  * http://tutorialzine.com/2010/01/sticky-notes-ajax-php-jquery/
- * 
- * TODO:
- * - Add some view to advertise that the object is annotated, regardless of permissions
- * - Improve edit/resolve/delete menu layout
+ *
  */
 elgg_register_event_handler('init', 'system', 'teacher_annotations_init');
 
@@ -25,6 +22,17 @@ function teacher_annotations_init() {
 	define("TA_COLOR_GREEN", 'green');
 	define("TA_COLOR_ORANGE", 'orange');
 	define("TA_COLOR_PURPLE", 'purple');
+
+	// Set list of exceptions
+	global $TA_EXCEPTIONS;
+	$TA_EXCEPTIONS = array(
+		'feedback',
+		'forum',
+		'forum_topic',
+		'forum_reply',
+		'poll',
+		'messages',
+	);
 
 	// Define relationships
 	define('TA_STICKY_NOTE_RELATIONSHIP', 'ta_sticky_note_added_to'); // Relationship for stickies
@@ -96,6 +104,7 @@ function teacher_annotations_init() {
 function teacherannotations_page_handler($page) {
 	// TESTING CODE!!
 	if ($page[0] == 'debug') {
+		admin_gatekeeper();
 		
 		$delete = get_input('delete', FALSE);
 		
@@ -153,6 +162,7 @@ function teacherannotations_page_handler($page) {
 		}
 		echo "</pre>";
 	} else {
+		admin_gatekeeper();
 		include elgg_get_plugins_path() . 'teacherannotations/notes.php';
 	}
 }
@@ -186,16 +196,9 @@ function teacherannotations_entity_full_view_handler($hook, $type, $return, $par
 		}
 
 		// We might not want to attach sticky notes to certain entities..
-		$exceptions = array(
-			'feedback',
-			'forum',
-			'forum_topic',
-			'forum_reply',
-			'poll',
-			'messages',
-		);
+		global $TA_EXCEPTIONS;
 
-		if (in_array($params['vars']['entity']->getSubtype(), $exceptions)) {
+		if (in_array($params['vars']['entity']->getSubtype(), $TA_EXCEPTIONS)) {
 			return $return;
 		}
 
@@ -208,6 +211,61 @@ function teacherannotations_entity_full_view_handler($hook, $type, $return, $par
 
 		$return .= "<div id='ta-bottom-bar'>$content</div>";
 	}
+	return $return;
+}
+
+/**
+ * Add an icon to advertise that an entity has sticky notes
+ *
+ * @param unknown_type $hook
+ * @param unknown_type $type
+ * @param unknown_type $return
+ * @param unknown_type $params
+ * @return unknown
+ */
+function teacherannotations_entity_menu_setup($hook, $type, $return, $params) {
+	if (elgg_in_context('widgets')) {
+		return $return;
+	}
+
+	global $TA_EXCEPTIONS;
+
+	// Don't show icon on exceptions
+	if (in_array($params['entity']->getSubtype(), $TA_EXCEPTIONS)) {
+		return $return;
+	}
+
+	$title = elgg_echo('teacherannotations:label:entitystickied');
+
+	$options = array(
+		'type' => 'object',
+		'subtype' => 'ta_sticky_note',
+		'relationship' => TA_STICKY_NOTE_RELATIONSHIP,
+		'relationship_guid' => $params['entity']->guid,
+		'inverse_relationship' => TRUE,
+		'count' => TRUE,
+	);
+
+	// Count notes, ignoring access
+	$ia = elgg_get_ignore_access();
+	elgg_set_ignore_access(TRUE);
+
+	$notes = elgg_get_entities_from_relationship($options);
+
+	elgg_set_ignore_access($ia);
+
+	// Display icon if there are notes for this entity
+	if ($notes) {
+		$options = array(
+			'name' => 'ta-entity-sticky-notes',
+			'text' => "<span title='{$title}' class='ta-sticky-note-icon'></span>",
+			'href' => FALSE,
+			'priority' => 99999,
+		);
+
+		$return[] = ElggMenuItem::factory($options);
+	}
+
 	return $return;
 }
 

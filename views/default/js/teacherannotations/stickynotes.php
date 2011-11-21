@@ -44,18 +44,23 @@ elgg.teacherannotations.stickynotes.init = function() {
 
 	// Grab some elements to calculate x,y's
 	var $inner = $('.elgg-page-body > .elgg-inner');
-	var $topbar = $('.elgg-page-topbar');
 	var $page = $('.elgg-page');
+	var topbar_height = $('.elgg-page-topbar').height();
+
+	// There may not be a topbar in some situations, so set to 0 if it doesn't exist
+	if (!topbar_height) {
+		topbar_height = 0;
+	}
 
 	// Size the container box
-	$("#ta-sticky-notes-container").css({left: $inner.offset().left + 'px',top: $topbar.height() + 'px'});
+	$("#ta-sticky-notes-container").css({left: $inner.offset().left + 'px',top: topbar_height + 'px'});
 
 	// Size the boundary box
 	$("#ta-sticky-notes-boundary").css({
 		left: $inner.offset().left + 'px',
-		top: $topbar.height() + 'px',
+		top: topbar_height + 'px',
 		width: $inner.width() + 'px',
-		height: ($page.height() - $topbar.height()) + 'px',
+		height: ($page.height() - topbar_height) + 'px',
 	});
 
 	/** EVENT HANDLERS **/

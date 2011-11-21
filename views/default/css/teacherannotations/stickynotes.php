@@ -271,6 +271,12 @@
 	text-shadow: 0 0 4px #000000;
 }
 
+.ta-sticky-note-icon {
+	width: 16px;
+	height: 16px;
+	background-image: url(<?php echo elgg_get_site_url(); ?>mod/teacherannotations/graphics/sticky-icon.png);
+}
+
 /* Resizeable stuff */
 .ta-sticky-note .ui-icon {
 	width: 16px;

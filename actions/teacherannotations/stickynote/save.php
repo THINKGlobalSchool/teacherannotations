@@ -79,7 +79,6 @@ $note->description = $description;
 $note->color = $color;
 
 // We'll ignore access here (for now) to allow others to move notes
-// @TODO - If I stick with ignoring access for moving, I need to find a more secure way
 $ia = elgg_get_ignore_access();
 
 if ($morphing) {
