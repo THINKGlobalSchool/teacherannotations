@@ -33,7 +33,7 @@ div#ta-bottom-bar {
     overflow: hidden;
     padding: 0 10px 4px;
     position: absolute;
-    width: 358px;
+    width: 375px;
     z-index: 5000;
 }
 
