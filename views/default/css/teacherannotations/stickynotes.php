@@ -266,15 +266,66 @@
 	/*content: "\00a0|\00a0";*/ // Add a pipe between menu items
 }
 
-.ta-sticky-notes-menu-item a.ta-sticky-notes-menu-selected, .ta-sticky-notes-menu-item a.ta-sticky-notes-menu-selected:hover {
-	text-decoration: underline !important;
-	text-shadow: 0 0 4px #000000;
+.ta-sticky-notes-menu-item a.ta-sticky-notes-menu-selected {
+	color: #AAAAAA;
+
+}
+
+.ta-sticky-notes-menu-item a.ta-sticky-notes-menu-selected:hover {
+	color: #AAAAAA !important;
+	cursor: default !important;
 }
 
 .ta-sticky-note-icon {
+	display: block;
 	width: 16px;
 	height: 16px;
 	background-image: url(<?php echo elgg_get_site_url(); ?>mod/teacherannotations/graphics/sticky-icon.png);
+}
+
+.ta-sticky-note-icon:hover {
+	background-position: 0 -16px;
+}
+
+
+.ta-sticky-note-white-icon {
+	width: 16px;
+	height: 16px;
+	background-image: url(<?php echo elgg_get_site_url(); ?>mod/teacherannotations/graphics/sticky-icon-bottom-bar.png);
+	float: left;
+	margin-right: 4px;
+}
+
+.elgg-menu-item-ta-sticky-note-add:hover .ta-sticky-note-white-icon {
+	background-position: 0 -16px;
+}
+
+/* Info toggle box */
+.ta-sticky-note-info {
+	display: none;
+	position: absolute;
+	min-height: 18px;
+	z-index: 9000;
+	background: #FFF;
+	padding: 4px;
+	-webkit-box-shadow: 1px 1px 5px #000;
+	-moz-box-shadow: 1px 1px 5px #000;
+	box-shadow: 1px 1px 5px #000;
+}
+
+.ta-note-info {
+	display: block;
+	font-size: 95%;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.ta-note-info.elgg-subtext {
+	font-size: 100%;
+}
+
+.ta-note-info:hover {
+	background: #DDD;
 }
 
 /* Resizeable stuff */

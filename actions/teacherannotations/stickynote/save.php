@@ -37,6 +37,7 @@ if (!$guid) {
 	$note = new ElggObject();
 	$note->subtype = 'ta_sticky_note';
 	$note->posted_to_entity_guid = $entity->guid; // Store the entity guid as metadata as well
+	$note->posted_to_owner_guid = $entity->owner_guid; // Store the owner guid of the entity as well (future use)
 	$note->access_id = $access_id;
 } else {
 	$note = get_entity($guid);

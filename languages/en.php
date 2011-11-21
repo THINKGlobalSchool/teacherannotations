@@ -38,6 +38,7 @@ $english = array(
 	'teacherannotations:label:accessloggedin' => 'Logged In Users',
 	'teacherannotations:label:private' => 'Private Annotation',
 	'teacherannotations:label:entitystickied' => 'This item has sticky notes',
+	'teacherannotations:label:noteaddedby' => 'Added by %s %s',
 
 	// River
 

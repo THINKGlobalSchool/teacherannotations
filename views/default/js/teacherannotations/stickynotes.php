@@ -124,6 +124,17 @@ elgg.teacherannotations.stickynotes.init = function() {
 
 	// Show unresolved notes click handler
 	$('.ta-sticky-notes-show-unresolved').live('click', elgg.teacherannotations.stickynotes.showUnresolvedClick);
+
+	// Set up sticky hover menu
+	$(".ta-show-sticky-note-info").live('hover', elgg.teacherannotations.stickynotes.showStickyInfo);
+	$(".ta-show-sticky-note-info").live('click', function(e) {e.preventDefault();});
+
+	// Hide the info box when clicking outside
+	$('body').live('click', function(event) {
+		if (!$(event.target).hasClass('ta-show-sticky-note-info') && event.target.className !== "ta-sticky-note-info") {
+			$(".ta-sticky-note-info").fadeOut();
+		}
+	});
 }
 
 // Make draggable helper function
@@ -789,6 +800,20 @@ elgg.teacherannotations.stickynotes.disableLink = function(event) {
 	event.preventDefault()
 	return false;
 }
+
+// Function to handle click events for the sticky show info link
+elgg.teacherannotations.stickynotes.showStickyInfo = function(event) {
+	$id = $($(this).attr('href'));
+	$id.fadeIn();
+	$id.appendTo('body').position({
+		my: "right top",
+		at: "right top",
+		of: $(this),
+		offset: "0 25",
+	})
+	event.preventDefault();
+}
+
 
 elgg.register_hook_handler('init', 'system', elgg.teacherannotations.stickynotes.init);
 //</script>

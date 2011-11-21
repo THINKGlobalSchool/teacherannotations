@@ -11,6 +11,9 @@
  * Utilizes code from the following tutorial:
  * http://tutorialzine.com/2010/01/sticky-notes-ajax-php-jquery/
  *
+ * Future todo:
+ * - Parents can see sticky notes on their kid's items regardless of access
+ * - Somewhere to view notes posted
  */
 elgg_register_event_handler('init', 'system', 'teacher_annotations_init');
 
@@ -228,20 +231,20 @@ function teacherannotations_entity_menu_setup($hook, $type, $return, $params) {
 		return $return;
 	}
 
+	$entity = $params['entity'];
+
 	global $TA_EXCEPTIONS;
 
 	// Don't show icon on exceptions
-	if (in_array($params['entity']->getSubtype(), $TA_EXCEPTIONS)) {
+	if (in_array($entity->getSubtype(), $TA_EXCEPTIONS)) {
 		return $return;
 	}
-
-	$title = elgg_echo('teacherannotations:label:entitystickied');
 
 	$options = array(
 		'type' => 'object',
 		'subtype' => 'ta_sticky_note',
 		'relationship' => TA_STICKY_NOTE_RELATIONSHIP,
-		'relationship_guid' => $params['entity']->guid,
+		'relationship_guid' => $entity->guid,
 		'inverse_relationship' => TRUE,
 		'count' => TRUE,
 	);
@@ -249,18 +252,39 @@ function teacherannotations_entity_menu_setup($hook, $type, $return, $params) {
 	// Count notes, ignoring access
 	$ia = elgg_get_ignore_access();
 	elgg_set_ignore_access(TRUE);
-
 	$notes = elgg_get_entities_from_relationship($options);
-
 	elgg_set_ignore_access($ia);
 
 	// Display icon if there are notes for this entity
 	if ($notes) {
+		$options['count'] = FALSE;
+
+		elgg_set_ignore_access(TRUE);
+		$notes = elgg_get_entities_from_relationship($options);
+		elgg_set_ignore_access($ia);
+
+		$toggle_box = elgg_view('teacherannotations/stickynoteinfo', array(
+			'notes' => $notes,
+			'entity' => $entity,
+		));
+
+		// Create menu item
 		$options = array(
 			'name' => 'ta-entity-sticky-notes',
-			'text' => "<span title='{$title}' class='ta-sticky-note-icon'></span>",
-			'href' => FALSE,
+			'text' => "<span class='ta-sticky-note-icon'></span>",
+			'href' => "#ta-sticky-note-info-{$entity->guid}",
+			'class' => "ta-show-sticky-note-info",
+			'title' => elgg_echo('teacherannotations:label:entitystickied'),
 			'priority' => 99999,
+		);
+
+		$return[] = ElggMenuItem::factory($options);
+
+		// Stick the toggle box in the menu seperately
+		$options = array(
+			'name' => 'ta-entity-sticky-notes-toggle-box',
+			'text' => $toggle_box,
+			'href' => FALSE,
 		);
 
 		$return[] = ElggMenuItem::factory($options);
@@ -290,7 +314,7 @@ function teacherannotations_sticky_notes_menu_setup($hook, $type, $return, $para
 
 	$options = array(
 		'name' => 'ta-sticky-note-add',
-		'text' => elgg_echo('teacherannotations:label:add'),
+		'text' => "<span class='ta-sticky-note-white-icon'></span>" . elgg_echo('teacherannotations:label:add'),
 		'href' => '#ta-add-sticky-note-form',
 		'link_class' => 'elgg-lightbox',
 		'item_class' => 'ta-sticky-notes-menu-item ta-sticky-notes-menu-item-border',

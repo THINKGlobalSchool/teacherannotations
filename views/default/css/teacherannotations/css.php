@@ -24,7 +24,6 @@ div#ta-bottom-bar {
     border-style: solid;
     border-width: 2px 2px 0;
     bottom: 0;
-    box-shadow: 0 0 3px #333333;
     color: #000000;
     font-weight: bold;
     height: 0;
@@ -33,7 +32,7 @@ div#ta-bottom-bar {
     overflow: hidden;
     padding: 0 10px 4px;
     position: absolute;
-    width: 375px;
+    width: 395px;
     z-index: 5000;
 }
 
