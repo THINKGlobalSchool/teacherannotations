@@ -114,10 +114,14 @@
 
 .ta-sticky-note-actions {
 	font-size: 10px;
+	float: right;
+	margin-top: -10px;
+	margin-right: -3px;
 }
 
 .ta-sticky-note-body {
 	font-size: 105%;
+	margin-top: 5px;
 }
 
 .ta-sticky-note-edit-container {
@@ -188,6 +192,7 @@
 
 .ta-sticky-note-comment, .ta-sticky-note-comment-cancel {
 	float: right;
+	font-size: 10px;
 	margin-bottom: 5px;
 }
 

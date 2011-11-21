@@ -256,7 +256,7 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 				// Add comment button
 				var $comment_link = $(document.createElement('a'));
 				$comment_link.attr('href', guid);
-				$comment_link.attr('class', 'ta-sticky-note-actions ta-sticky-note-comment');
+				$comment_link.attr('class', 'ta-sticky-note-comment');
 				$comment_link.text(elgg.echo('teacherannotations:label:comment'));
 				tmp.find('div.ta-sticky-note-comments-container').append($comment_link);
 

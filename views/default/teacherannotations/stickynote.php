@@ -15,7 +15,7 @@ $note = elgg_extract('entity', $vars);
 $owner = $note->getOwnerEntity();
 $owner_icon = elgg_view_entity_icon($owner, 'tiny');
 $owner_link = "<a href='{$owner->getURL()}'>{$owner->name}</a>";
-$date = elgg_view_friendly_time($note->time_updated);
+$date = elgg_view_friendly_time($note->time_created);
 
 // Set class if note is resolved
 if ($note->resolved) {
@@ -39,8 +39,6 @@ HTML;
 		$resolve_label = elgg_echo('teacherannotations:label:resolve');
 		$edit .= " <a href='{$note->guid}' class='ta-sticky-note-resolve'>$resolve_label</a>";
 	}
-} else {
-	$edit = "&nbsp;";
 }
 
 $comment_label = elgg_echo('teacherannotations:label:comment');
@@ -55,21 +53,22 @@ if ($note->access_id == ACCESS_LOGGED_IN) {
 
 $content = <<<HTML
 	<div tabindex="{$note->z}" class="ta-actionable ta-sticky-note ta-draggable {$note->color} {$resolved_class}" style="display: none;left:{$note->x}px;top:{$note->y}px;width:{$note->width}px;z-index:{$note->z};">
+		<span class="ta-sticky-note-actions ta-sticky-note-edit-container">
+			$edit
+		</span>
+		<div class='clearfix'></div>
 		<div class="ta-sticky-note-author">
 			$owner_icon
 			<div class="ta-sticky-note-author-info">
 				<span>{$owner_link}</span>
 				<span class="elgg-subtext">$date</span>
-				<span class="ta-sticky-note-actions ta-sticky-note-edit-container">
-					$edit
-				</span>
 			</div>
 			<div style="clear: both;"></div>
 		</div>
 		<div class="ta-sticky-note-body">$note->description</div>
 		<div class="ta-sticky-note-comments-container">
 			<div class='ta-sticky-note-comment-list'>$comments</div>
-			<a href="{$note->guid}" class="ta-sticky-note-actions ta-sticky-note-comment">$comment_label</a>
+			<a href="{$note->guid}" class="ta-sticky-note-comment">$comment_label</a>
 		</div>
 		<span class="ta-sticky-note-guid">$note->guid</span>
 		<span class='ta-sticky-note-access-display'>$access_display</span>

@@ -54,14 +54,15 @@ $content = <<<HTML
 	
 	<!-- Preview -->
 	<div id="ta-sticky-note-preview" class="ta-sticky-note yellow" style="left:0;top:35px;z-index:1">
+		<span class="ta-sticky-note-actions ta-sticky-note-edit-container">
+		</span>
+		<div class='clearfix'></div>
 		<div class="ta-sticky-note-author hidden">
 			$owner_icon
 			<div class="ta-sticky-note-author-info">
 				<!-- not sure about the owner name here... names *could* be long {$owner->name}<br /> -->
 				<span>{$owner_link}</span>
 				<span class="elgg-subtext"></span>
-				<span class="ta-sticky-note-actions ta-sticky-note-edit-container">
-				</span>
 			</div>
 			<div style="clear: both;"></div>
 		</div>

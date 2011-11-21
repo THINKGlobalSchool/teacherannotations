@@ -13,8 +13,6 @@
  * 
  * TODO:
  * - Add some view to advertise that the object is annotated, regardless of permissions
- *    - Maybe show total/private #?
- * - Improve bottom bar
  * - Improve edit/resolve/delete menu layout
  */
 elgg_register_event_handler('init', 'system', 'teacher_annotations_init');

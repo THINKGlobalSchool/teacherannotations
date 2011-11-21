@@ -127,7 +127,7 @@ if (!$quiet) {
 	system_message(elgg_echo('teacherannotations:success:savestickynote'));
 }
 
-$time = $note->time_updated;
+$time = $note->time_created;
 if (!$time) {
 	$time = time();
 }
