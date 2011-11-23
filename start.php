@@ -87,6 +87,9 @@ function teacher_annotations_init() {
 	// Register hook handler to add a full_view kind of context to all views
 	elgg_register_plugin_hook_handler('view', 'all', 'teacherannotations_entity_full_view_handler');
 
+	// Hook into the profile view to add sticky notes to user profiles
+	elgg_register_plugin_hook_handler('view', 'profile/layout', 'teacherannotations_sticky_profile_view_handler');
+
 	// Register general entity menu hook
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'teacherannotations_entity_menu_setup', 9999);
 
@@ -133,7 +136,7 @@ function teacherannotations_page_handler($page) {
 		
 		foreach($notes as $note) {
 			$options = array(
-				'type' => 'object',
+				'types' => array('object', 'user'),
 				'limit' => 1,
 				'relationship' => TA_STICKY_NOTE_RELATIONSHIP,
 				'relationship_guid' => $note->guid,
@@ -215,6 +218,31 @@ function teacherannotations_entity_full_view_handler($hook, $type, $return, $par
 
 		$return .= "<div id='ta-bottom-bar'>$content</div>";
 	}
+	return $return;
+}
+
+/**
+ * Post process profile/layout view to add sticky notes
+ *
+ * @param unknown_type $hook
+ * @param unknown_type $type
+ * @param unknown_type $return
+ * @param unknown_type $params
+ * @return unknown
+ */
+function teacherannotations_sticky_profile_view_handler($hook, $type, $return, $params) {
+	if (!elgg_is_logged_in() || elgg_get_viewtype() != "default" || elgg_in_context('admin')) {
+		return;
+	}
+
+	// Get annotations menu
+	$content = elgg_view_menu('teacherannotations', array(
+		'entity' => $params['vars']['entity'],
+		'sort_by' => 'priority',
+		'class' => 'elgg-menu-hz'
+	));
+
+	$return .= "<div id='ta-bottom-bar'>$content</div>";
 	return $return;
 }
 

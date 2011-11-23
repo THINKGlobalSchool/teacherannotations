@@ -72,6 +72,16 @@ To view your item, click here:
 
 %s',
 
+	'teacherannotations:notification:stickynotecreateuser:body' => '%s has posted a sticky note on your profile!
+
+It reads:
+
+%s
+
+To view your profile, click here:
+
+%s',
+
 	'teacherannotations:notification:stickynotecomment:subject' => 'Sticky Note Commented',
 	'teacherannotations:notification:stickynotecomment:body' => '%s has commented on your sticky note. It reads:
 

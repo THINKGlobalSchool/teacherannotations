@@ -107,15 +107,27 @@ if (!$guid) {
 	// Add entity relationship
 	add_entity_relationship($note->guid, TA_STICKY_NOTE_RELATIONSHIP, $entity_guid);
 
-	// notify if poster wasn't owner
 	$user = elgg_get_logged_in_user_entity();
-	if ($entity->owner_guid != $user->guid) {
+	if ($entity->getType() != 'user' && $entity->owner_guid != $user->guid) {
+		// If we're posting on a regular object, notify if poster wasn't owner
 		notify_user($entity->owner_guid,
 					$user->guid,
 					elgg_echo('teacherannotations:notification:stickynotecreate:subject'),
 					elgg_echo('teacherannotations:notification:stickynotecreate:body', array(
 						$user->name,
 						$entity->title ? $entity->title : $entity->name,
+						$description,
+						$entity->getURL(),
+					))
+				);
+	} else if ($entity->getType() == 'user' && $entity->guid != $user->guid) {
+		system_message('wtf');
+		// If we're posting to a user, notify if posting to another user only
+		notify_user($entity->guid,
+					$user->guid,
+					elgg_echo('teacherannotations:notification:stickynotecreate:subject'),
+					elgg_echo('teacherannotations:notification:stickynotecreateuser:body', array(
+						$user->name,
 						$description,
 						$entity->getURL(),
 					))
