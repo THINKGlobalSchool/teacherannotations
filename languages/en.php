@@ -83,13 +83,30 @@ To view your profile, click here:
 %s',
 
 	'teacherannotations:notification:stickynotecomment:subject' => 'Sticky Note Commented',
-	'teacherannotations:notification:stickynotecomment:body' => '%s has commented on your sticky note. It reads:
+	'teacherannotations:notification:stickynotecommentowner:body' => '%s has commented on your sticky note. It reads:
 
 %s
 
 To view your sticky note, click here:
 
 %s',
+
+	'teacherannotations:notification:stickynotecommentuser:body' => '%s has commented on a sticky note on your profile. It reads:
+
+%s
+
+To view your profile, click here:
+
+%s',
+
+	'teacherannotations:notification:stickynotecommentitem:body' => '%s has commented on a sticky note on your Spot content. It reads:
+
+%s
+
+To view your item, click here:
+
+%s',
+
 
 	// Other content
 );

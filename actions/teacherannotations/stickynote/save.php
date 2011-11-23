@@ -19,7 +19,7 @@ $access_id = get_input('access_id', ACCESS_LOGGED_IN);
 if (!$guid) {
 	// Require the entity!
 	$entity = get_entity($entity_guid);
-	if (!$entity_guid) {
+	if (!$entity) {
 		if (!$quiet) {
 			register_error(elgg_echo('teacherannotations:error:entity'));
 		}
@@ -121,7 +121,6 @@ if (!$guid) {
 					))
 				);
 	} else if ($entity->getType() == 'user' && $entity->guid != $user->guid) {
-		system_message('wtf');
 		// If we're posting to a user, notify if posting to another user only
 		notify_user($entity->guid,
 					$user->guid,
