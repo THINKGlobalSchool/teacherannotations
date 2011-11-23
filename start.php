@@ -35,6 +35,7 @@ function teacher_annotations_init() {
 		'forum_reply',
 		'poll',
 		'messages',
+		'plugin',
 	);
 
 	// Define relationships
@@ -183,7 +184,7 @@ function teacherannotations_page_handler($page) {
  * @return unknown
  */
 function teacherannotations_entity_full_view_handler($hook, $type, $return, $params) {
-	if (!elgg_is_logged_in() || elgg_get_viewtype() != "default") {
+	if (!elgg_is_logged_in() || elgg_get_viewtype() != "default" || elgg_in_context('admin')) {
 		return;
 	}
 
