@@ -102,6 +102,9 @@ function teacher_annotations_init() {
 	// Register a handler for deleting teacher annotations
 	elgg_register_event_handler('delete', 'object', 'teacherannotation_delete_event_listener');
 
+	// Whitelist ajax views
+	elgg_register_ajax_view('teacherannotations/stickynotecomments');
+
 	return TRUE;
 }
 
