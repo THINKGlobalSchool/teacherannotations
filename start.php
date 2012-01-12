@@ -451,11 +451,15 @@ function teacherannotation_create_event_listener($event, $object_type, $object) 
 			elgg_set_context('ta_acl');
 			add_user_to_access_collection($object->owner_guid, $ta_acl);    // Add note owner
 
-			// If posting to a user entity, make sure to add the user themselves, not the owner_guid
-			if ($posted_to->getType() == 'user') {
-				add_user_to_access_collection($posted_to->guid, $ta_acl); // Add user
-			} else {
-				add_user_to_access_collection($posted_to->owner_guid, $ta_acl); // Add entity owner
+			try {
+				// If posting to a user entity, make sure to add the user themselves, not the owner_guid
+				if ($posted_to->getType() == 'user') {
+					add_user_to_access_collection($posted_to->guid, $ta_acl); // Add user
+				} else {
+					add_user_to_access_collection($posted_to->owner_guid, $ta_acl); // Add entity owner
+				}
+			} catch (DatabaseException $e) {
+				// More efficient to fail here than check if a user has already been added to an ACL
 			}
 
 			elgg_set_context($context);
