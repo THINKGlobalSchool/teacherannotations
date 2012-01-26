@@ -195,10 +195,10 @@ function teacherannotations_entity_full_view_handler($hook, $type, $return, $par
 	}
 
 	// Only dealing with straight up object views here
-	if (strpos($params['view'], 'object/') === 0              // Check that view is an object view
-		&& isset($params['vars']['entity'])                   // Make sure we have an entity
-		&& strpos($params['view'], 'object/elements') !== 0   // Ignore object/elements views
-		&& $params['vars']['full_view']) {                    // Check for full view
+	if (strpos($params['view'], 'object/') === 0                  // Check that view is an object view
+		&& isset($params['vars']['entity'])                       // Make sure we have an entity
+		&& strpos($params['view'], 'object/elements') !== 0       // Ignore object/elements views
+		&& $params['vars']['full_view']) {                        // Check for full view
 
 		// Double check entity
 		if (!elgg_instanceof($params['vars']['entity'], 'object')) {
@@ -219,7 +219,13 @@ function teacherannotations_entity_full_view_handler($hook, $type, $return, $par
 			'class' => 'elgg-menu-hz'
 		));
 
-		$return .= "<div id='ta-bottom-bar'>$content</div>";
+		// Workaround for exceptional cases, this makes sure that the bar is only added
+		// once per page
+		if (!get_input('bottom-bar-exists')) {
+			set_input('bottom-bar-exists', TRUE);
+			$return .= "<div id='ta-bottom-bar'>$content</div>";
+		}
+
 	}
 	return $return;
 }

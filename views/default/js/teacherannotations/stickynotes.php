@@ -816,4 +816,3 @@ elgg.teacherannotations.stickynotes.showStickyInfo = function(event) {
 
 
 elgg.register_hook_handler('init', 'system', elgg.teacherannotations.stickynotes.init);
-//</script>

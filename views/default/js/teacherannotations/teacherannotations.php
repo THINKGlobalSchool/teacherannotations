@@ -25,4 +25,3 @@ elgg.teacherannotations.init = function() {
 }
 
 elgg.register_hook_handler('init', 'system', elgg.teacherannotations.init);
-//</script>
