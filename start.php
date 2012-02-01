@@ -91,7 +91,7 @@ function teacher_annotations_init() {
 	elgg_register_plugin_hook_handler('view', 'profile/layout', 'teacherannotations_sticky_profile_view_handler');
 
 	// Register general entity menu hook
-	elgg_register_plugin_hook_handler('register', 'menu:entity', 'teacherannotations_entity_menu_setup', 9999);
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'teacherannotations_entity_menu_setup');
 
 	// Hook into the annotations menu to add sticky notes
 	elgg_register_plugin_hook_handler('register', 'menu:teacherannotations', 'teacherannotations_sticky_notes_menu_setup');
@@ -313,7 +313,8 @@ function teacherannotations_entity_menu_setup($hook, $type, $return, $params) {
 			'href' => "#ta-sticky-note-info-{$entity->guid}",
 			'class' => "ta-show-sticky-note-info",
 			'title' => elgg_echo('teacherannotations:label:entitystickied'),
-			'priority' => 99999,
+			'section' => 'info',
+			'priority' => 1200,
 		);
 
 		$return[] = ElggMenuItem::factory($options);
@@ -323,6 +324,7 @@ function teacherannotations_entity_menu_setup($hook, $type, $return, $params) {
 			'name' => 'ta-entity-sticky-notes-toggle-box',
 			'text' => $toggle_box,
 			'href' => FALSE,
+			'section' => 'hidden',
 		);
 
 		$return[] = ElggMenuItem::factory($options);
