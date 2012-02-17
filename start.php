@@ -190,7 +190,7 @@ function teacherannotations_page_handler($page) {
  * @return unknown
  */
 function teacherannotations_entity_full_view_handler($hook, $type, $return, $params) {
-	if (!elgg_is_logged_in() || elgg_get_viewtype() != "default" || elgg_in_context('admin')) {
+	if (!elgg_is_logged_in() || elgg_get_viewtype() != "default" || elgg_in_context('admin') || elgg_in_context('ajax')) {
 		return;
 	}
 
