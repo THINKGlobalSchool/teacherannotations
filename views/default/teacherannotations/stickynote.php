@@ -31,6 +31,11 @@ if ($note->canEdit()) {
 		<a href="{$note->guid}" class="ta-sticky-note-delete">$delete_label</a> |
 HTML;
 
+}
+
+$members = get_members_of_access_collection($note->ta_acl, TRUE);
+
+if ($note->canEdit() || in_array(elgg_get_logged_in_user_guid(), $members)) {
 	// Add resolve/unresolve link
 	if ($note->resolved) {
 		$unresolve_label = elgg_echo('teacherannotations:label:unresolve');
@@ -40,6 +45,7 @@ HTML;
 		$edit .= " <a href='{$note->guid}' class='ta-sticky-note-resolve'>$resolve_label</a>";
 	}
 }
+
 
 $comment_label = elgg_echo('teacherannotations:label:comment');
 $comments = elgg_view('teacherannotations/stickynotecomments', array('note_guid' => $note->guid));
@@ -51,6 +57,8 @@ if ($note->access_id == ACCESS_LOGGED_IN) {
 	$access_display = $acl->name;
 }
 
+
+
 $content = <<<HTML
 	<div tabindex="{$note->z}" class="ta-actionable ta-sticky-note ta-draggable {$note->color} {$resolved_class}" style="display: none;left:{$note->x}px;top:{$note->y}px;width:{$note->width}px;z-index:{$note->z};">
 		<span class="ta-sticky-note-actions ta-sticky-note-edit-container">
@@ -59,7 +67,7 @@ $content = <<<HTML
 		<div class='clearfix'></div>
 		<div class="ta-sticky-note-author">
 			$owner_icon
-			<div class="ta-sticky-note-author-info">
+			<div class="ta-sticky-note-author-info">$blah
 				<span>{$owner_link}</span>
 				<span class="elgg-subtext">$date</span>
 			</div>

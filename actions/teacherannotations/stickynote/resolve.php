@@ -23,15 +23,24 @@ if (!elgg_instanceof($note, 'object', 'ta_sticky_note')) {
 // Set resolved
 $note->resolved = $resolve;
 
+$members = get_members_of_access_collection($note->ta_acl, TRUE);
+
+$ia = FALSE;
+if ($note->canEdit() || in_array(elgg_get_logged_in_user_guid(), $members)) {
+	$ia = elgg_get_ignore_access();
+	elgg_set_ignore_access(TRUE);
+}
+
 // Try saving
 if (!$note->save()) {
 	if (!$quiet) {
 		register_error(elgg_echo('teacherannotations:error:resolvesticky'));
 	}
+	elgg_set_ignore_access($ia);
 	forward(REFERER);
 }
+elgg_set_ignore_access($ia);
 
-echo $note->resolved;
 if ($note->resolved) {
 	system_message(elgg_echo('teacherannotations:success:resolvesticky'));
 } else {
