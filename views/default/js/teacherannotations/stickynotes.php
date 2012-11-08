@@ -328,9 +328,9 @@ elgg.teacherannotations.stickynotes.previewKeyup = function(event){
 
 	// Setting the text of the preview to the contents of the input field, and stripping all the HTML tags:
 	this.preview.find($(this).attr('id').replace('ta-sticky-note-preview-','.ta-sticky-note-'))
-				.html($(this)
-				.val()
-				.replace(/<[^>]+>/ig,''));
+				.html(elgg.teacherannotations.stickynotes.createLinks($(this).val().replace(/<[^>]+>/ig,'')));
+				
+	
 }
 
 // Click handler for the preview color chooser
@@ -812,6 +812,12 @@ elgg.teacherannotations.stickynotes.showStickyInfo = function(event) {
 		offset: "0 25",
 	})
 	event.preventDefault();
+}
+
+// Basic helper function to convert URLs into links
+elgg.teacherannotations.stickynotes.createLinks = function(text) {
+	var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+	return text.replace(exp,"<a href='$1'>$1</a>");
 }
 
 

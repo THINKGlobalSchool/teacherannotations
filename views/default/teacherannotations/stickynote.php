@@ -57,7 +57,7 @@ if ($note->access_id == ACCESS_LOGGED_IN) {
 	$access_display = $acl->name;
 }
 
-
+$description = elgg_view("output/longtext", array("value" => $note->description));
 
 $content = <<<HTML
 	<div tabindex="{$note->z}" class="ta-actionable ta-sticky-note ta-draggable {$note->color} {$resolved_class}" style="display: none;left:{$note->x}px;top:{$note->y}px;width:{$note->width}px;z-index:{$note->z};">
@@ -73,7 +73,7 @@ $content = <<<HTML
 			</div>
 			<div style="clear: both;"></div>
 		</div>
-		<div class="ta-sticky-note-body">$note->description</div>
+		<div class="ta-sticky-note-body">$description</div>
 		<div class="ta-sticky-note-comments-container">
 			<div class='ta-sticky-note-comment-list'>$comments</div>
 			<a href="{$note->guid}" class="ta-sticky-note-comment">$comment_label</a>
