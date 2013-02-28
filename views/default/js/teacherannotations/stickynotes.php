@@ -23,6 +23,10 @@ elgg.teacherannotations.stickynotes.colors = ['yellow', 'green', 'blue', 'orange
 elgg.teacherannotations.stickynotes.init = function() {
 	/** GENERAL INIT TASKS **/
 
+	if (!$('.elgg-page-body > .elgg-inner').length) {
+		return;
+	}
+
 	// temp variable for sticky z-indexes
 	var tmp;
 
