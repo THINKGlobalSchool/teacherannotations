@@ -126,6 +126,9 @@ elgg.teacherannotations.stickynotes.init = function() {
 	// Show all notes click handler
 	$('.ta-sticky-notes-show-all').live('click', elgg.teacherannotations.stickynotes.showAllClick);
 
+	// Show close click handler
+	$('.ta-sticky-notes-close').live('click', elgg.teacherannotations.stickynotes.closeClick);
+
 	// Show unresolved notes click handler
 	$('.ta-sticky-notes-show-unresolved').live('click', elgg.teacherannotations.stickynotes.showUnresolvedClick);
 
@@ -782,6 +785,12 @@ elgg.teacherannotations.stickynotes.showAllClick = function(event) {
 	$('.ta-sticky-note').each(function(){
 		$(this).fadeIn();
 	});
+	event.preventDefault();
+}
+
+// Click handler for close link
+elgg.teacherannotations.stickynotes.closeClick = function(event) {
+	$('#ta-bottom-bar').fadeOut();
 	event.preventDefault();
 }
 
