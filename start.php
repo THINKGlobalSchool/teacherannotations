@@ -198,6 +198,7 @@ function teacherannotations_entity_full_view_handler($hook, $type, $return, $par
 	if (strpos($params['view'], 'object/') === 0                  // Check that view is an object view
 		&& isset($params['vars']['entity'])                       // Make sure we have an entity
 		&& strpos($params['view'], 'object/elements') !== 0       // Ignore object/elements views
+		&& strpos($params['view'], 'object/comment') !== 0        // Ignore comments
 		&& $params['vars']['full_view']) {                        // Check for full view
 
 		// Double check entity
