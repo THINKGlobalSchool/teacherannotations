@@ -5,12 +5,12 @@
  * @package TeacherAnnotations
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  * 
  */
 
-$english = array(
+return array(
 	// Generic
 	'item:object:teacherannotation' => 'Teacher Annotation',
 	'item:object:ta_sticky_note' => 'Sticky Notes',
@@ -110,5 +110,3 @@ To view your item, click here:
 
 	// Other content
 );
-
-add_translation('en',$english);

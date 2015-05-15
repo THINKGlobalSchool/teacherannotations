@@ -12,7 +12,8 @@
 
 $options = array(
 	'guid' => $vars['note_guid'],
-	'annotation_name' => 'ta_sticky_note_comment'
+	'annotation_name' => 'ta_sticky_note_comment',
+	'full_view' => true
 );
 
 $html = elgg_list_annotations($options);

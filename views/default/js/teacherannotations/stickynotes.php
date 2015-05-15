@@ -23,6 +23,12 @@ elgg.teacherannotations.stickynotes.colors = ['yellow', 'green', 'blue', 'orange
 elgg.teacherannotations.stickynotes.init = function() {
 	/** GENERAL INIT TASKS **/
 
+	// Init lightbox stickies
+	$('.sticky-lightbox').colorbox({
+		'inline': true,
+		'href': "#ta-add-sticky-note-form"
+	});
+
 	if (!$('.elgg-page-body > .elgg-inner').length) {
 		return;
 	}
@@ -302,7 +308,7 @@ elgg.teacherannotations.stickynotes.submit = function(event) {
 				elgg.teacherannotations.stickynotes.initNotes(tmp);
 
 				// Close form
-				$.fancybox.close();
+				$.colorbox.close();
 
 				// Reset form
 				$("#ta-sticky-submit").replaceWith($_submit);

@@ -5,8 +5,8 @@
  * @package TeacherAnnotations
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  * 
  */
 ?>
@@ -41,6 +41,8 @@
 
 #ta-sticky-note-preview {
 	cursor: default;
+	margin-top: 25px;
+	margin-left: 20px;
 }
 
 .ta-sticky-note-color {
@@ -87,7 +89,7 @@
 
 #ta-sticky-note-add-form {
 	height: 240px;
-	margin: 10px 0 0 200px;
+	margin: 10px 0 0 220px;
 	width: 350px;
 }
 
@@ -106,6 +108,10 @@
 	margin-top: -2px;
 }
 
+.ta-sticky-note-author .ta-sticky-note-author-info a {
+	color: #333;
+}
+
 .ta-sticky-note-author .elgg-subtext {
 	color: inherit;
 	display: block;
@@ -117,6 +123,10 @@
 	float: right;
 	margin-top: -10px;
 	margin-right: -3px;
+}
+
+.ta-sticky-note-actions a {
+	color: #333;
 }
 
 .ta-sticky-note-body {
@@ -165,6 +175,10 @@
 	font-size: 11px;
 }
 
+.ta-sticky-note-comments-container a {
+	color: #333;
+}
+
 .ta-sticky-note-comment-list {
 	margin-top: 10px;
 }
@@ -175,7 +189,7 @@
 }
 
 .ta-sticky-note-comment-list h3 {
-	border-top: 1px dotted #999;
+	border-top: 1px solid #BBB;
 	padding-top: 3px;
 }
 
@@ -253,10 +267,6 @@
 	padding-right: 3px;
 }
 
-.ta-sticky-notes-menu-item-border {
-	border-right: 1px solid #DB1730;
-}
-
 .ta-sticky-notes-menu-item a {
 	margin-right: 5px;
 	color: #ffffff;
@@ -294,6 +304,7 @@
 	background-image: url(<?php echo elgg_get_site_url(); ?>mod/teacherannotations/graphics/sticky-icon-bottom-bar.png);
 	float: left;
 	margin-right: 4px;
+	font-weight: normal;
 }
 
 .elgg-menu-item-ta-sticky-note-add:hover .ta-sticky-note-white-icon {

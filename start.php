@@ -311,7 +311,7 @@ function teacherannotations_entity_menu_setup($hook, $type, $return, $params) {
 			'name' => 'ta-entity-sticky-notes',
 			'text' => "<span class='ta-sticky-note-icon'></span>",
 			'href' => "#ta-sticky-note-info-{$entity->guid}",
-			'class' => "ta-show-sticky-note-info",
+			'link_class' => "ta-show-sticky-note-info",
 			'title' => elgg_echo('teacherannotations:label:entitystickied'),
 			'section' => 'info',
 			'priority' => 1200,
@@ -355,8 +355,8 @@ function teacherannotations_sticky_notes_menu_setup($hook, $type, $return, $para
 	$options = array(
 		'name' => 'ta-sticky-note-add',
 		'text' => "<span class='ta-sticky-note-white-icon'></span>" . elgg_echo('teacherannotations:label:add'),
-		'href' => '#ta-add-sticky-note-form',
-		'link_class' => 'elgg-lightbox',
+		'href' => '#',
+		'link_class' => 'sticky-lightbox',
 		'item_class' => 'ta-sticky-notes-menu-item ta-sticky-notes-menu-item-border',
 		'priority' => 2,
 	);
@@ -407,7 +407,7 @@ function teacherannotations_sticky_notes_menu_setup($hook, $type, $return, $para
 
 	$options = array(
 		'name' => 'ta-sticky-notes-close',
-		'text' =>  '[X]',
+		'text' =>  elgg_view_icon('delete'),
 		'href' => '#',
 		'link_class' => 'ta-sticky-notes-close ta-sticky-notes-show-option',
 		'item_class' => 'ta-sticky-notes-menu-item',
