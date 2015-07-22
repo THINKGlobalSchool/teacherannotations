@@ -36,6 +36,7 @@ function teacher_annotations_init() {
 		'poll',
 		'messages',
 		'plugin',
+		'image'
 	);
 
 	// Define relationships
