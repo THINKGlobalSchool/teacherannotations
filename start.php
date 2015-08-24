@@ -200,7 +200,9 @@ function teacherannotations_entity_full_view_handler($hook, $type, $return, $par
 		&& isset($params['vars']['entity'])                       // Make sure we have an entity
 		&& strpos($params['view'], 'object/elements') !== 0       // Ignore object/elements views
 		&& strpos($params['view'], 'object/comment') !== 0        // Ignore comments
-		&& $params['vars']['full_view']) {                        // Check for full view
+		&& $params['vars']['full_view']                           // Check for full view
+		&& !elgg_in_context('widgets')) {                         // Not in widget context         
+
 
 		// Double check entity
 		if (!elgg_instanceof($params['vars']['entity'], 'object')) {
